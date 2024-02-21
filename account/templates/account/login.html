@@ -1,35 +1,52 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy University</title>
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <script src="{% static 'js/your_script.js' %}"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy University</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/script.js' %}"></script>
 </head>
+
 <body>
-    <h1 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h1>
-    <div class = "wrapper">
-     <form action =""> 
-     <div class="role-selector">
-        <span class="role" onclick="selectRole('teacher')">Teacher</span>
-        <span class="role active" onclick="selectRole('student')">Student</span>
-        <span class="role" onclick="selectRole('admin')">Admin</span>
-    </div>   
-    <div class="login-box">
-        <div class="input-box">
-            <input type="text" placeholder="Student Number" required>
-        </div>
-        <div class="input-box">
-            <input type="password" placeholder="Password" required>
-        </div>
-        <div class="forgot">
+  <h1 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h1>
+  <div class="wrapper">
+    <form action="" method="post">
+      <div class="role-selector">
+        <span id='teacher' class="role" onclick="selectRole('teacher')">Teacher</span>
+        <span id='student' class="role active" onclick="selectRole('student')">Student</span>
+        <span id='admin' class="role" onclick="selectRole('admin')">Admin</span>
+      </div>
+      <div class="login-box">
+        
+        <form action="{% url 'account:login' %}" method="post">
+          {% csrf_token %}
+          <div class="input-box">
+            <input id='idInput' name="id" type="text" placeholder="Student Number" required>
+          </div>
+          <div class="input-box">
+            <input name="password" type="password" placeholder="Password" required>
+          </div>
+          <div class="forgot">
             <a href="#">Forgot Password?</a>
-        </div>
-        <button type="submit" class="btn">Log in</button>
-    </div>
-</div>
-<script src="script.js"></script>
+          </div>
+          <input id="selectedRole" name="role" type="hidden" value="student">
+          <input type="submit" class="btn" value="Log in">
+        </form>
+
+      </div>
+    </form>
+    {% if messages %}
+          <div class="error-messages">
+            {% for message in messages %}
+              <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+    
+  </div>
 </body>
+
 </html>
