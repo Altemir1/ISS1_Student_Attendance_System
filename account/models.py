@@ -1,20 +1,24 @@
-
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class Student(models.Model):
+class CustomUser(AbstractUser):
+    fullName = models.CharField(max_length=255, blank=False)
+    email = models.EmailField(max_length=255, blank=False, unique=True)
+    
+    @property
+    def is_student(self):
+        return hasattr(self, 'student')
+
+    @property
+    def is_teacher(self):
+        return hasattr(self, 'teacher')
+    
+class Student(CustomUser):
     student_id = models.CharField(max_length=20, unique=True, blank=False)
-    fullName = models.CharField(max_length=255, blank=False),
-    password = models.CharField(max_length=255, blank=False),
-    email = models.EmailField(max_length=50, blank=False, unique=True)
-    
-    def __str__(self) -> str:
-        return self.student_id + ' ' + self.fullName
-    
-class Teacher(models.Model):
+    def __str__(self):
+        return f"{self.student_id} {self.fullName}"
+
+class Teacher(CustomUser):
     teacher_id = models.CharField(max_length=20, unique=True, blank=False)
-    fullName = models.CharField(max_length=255, blank=False),
-    password = models.CharField(max_length=255, blank=False),
-    email = models.EmailField(max_length=50, blank=False, unique=True)
-    
-    def __str__(self) -> str:
-        return self.student_id + ' ' + self.fullName
+    def __str__(self):
+        return f"{self.teacher_id} {self.fullName}"

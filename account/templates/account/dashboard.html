@@ -1,3 +1,10 @@
 <h1>hello</h1>
 
+{% if request.user.is_student %}
+        <p>Welcome, you are a Student!</p>
+        <!-- Add additional content specific to students -->
+{% elif request.user.is_teacher %}
+        <p>Welcome, you are a Teacher!</p>
+        <!-- Add additional content specific to teachers -->
+{% endif %}
 <a href="{% url 'account:logout' %}?next=/login/">Logout</a>

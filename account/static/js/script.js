@@ -5,16 +5,7 @@ function selectRole(role) {
     });
     selectedRoleElement.classList.add('active');
     document.getElementById('selectedRole').value = role;
-    var idInput = document.getElementById('idInput');
-    if (role == 'teacher'){
-        idInput.placeholder = 'Teacher Number';
-    }
-    else if(role == 'student'){
-        idInput.placeholder = 'Student Number';
-    }
-    else{
-        idInput.placeholder = 'Admin Number';
-    }
+    
 
    
 }

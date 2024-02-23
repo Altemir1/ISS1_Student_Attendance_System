@@ -24,8 +24,8 @@ SECRET_KEY = 'django-insecure-*_ff+e-1h7y5o#u1&h_$^x*qg&=g^ona4g5@z88+je$+p1-f_#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'be18-91-147-99-146.ngrok-free.app']
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -125,5 +125,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login/'
 
-# settings.py
+AUTH_USER_MODEL = 'account.CustomUser'
 
+AUTHENTICATION_BACKENDS = [
+    'account.backends.CustomUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

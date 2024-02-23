@@ -13,29 +13,26 @@
 <body>
   <h1 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h1>
   <div class="wrapper">
-    <form action="" method="post">
+    <form action="{% url 'account:login' %}" method="post">
+      {% csrf_token %}
       <div class="role-selector">
         <span id='teacher' class="role" onclick="selectRole('teacher')">Teacher</span>
         <span id='student' class="role active" onclick="selectRole('student')">Student</span>
         <span id='admin' class="role" onclick="selectRole('admin')">Admin</span>
       </div>
       <div class="login-box">
-        
-        <form action="{% url 'account:login' %}" method="post">
-          {% csrf_token %}
+      
           <div class="input-box">
-            <input id='idInput' name="id" type="text" placeholder="Student Number" required>
+            {{ form.id }}
           </div>
           <div class="input-box">
-            <input name="password" type="password" placeholder="Password" required>
+            {{ form.password }}
           </div>
           <div class="forgot">
             <a href="#">Forgot Password?</a>
           </div>
           <input id="selectedRole" name="role" type="hidden" value="student">
           <input type="submit" class="btn" value="Log in">
-        </form>
-
       </div>
     </form>
     {% if messages %}

@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Student, Teacher
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-
-
+from .forms import LoginForm
+from django.contrib.auth.hashers import make_password
+    
 @login_required
 def dashboard(request):
     return render(request,
@@ -12,25 +13,27 @@ def dashboard(request):
 
 def user_login(request):
     if request.method == 'POST':
-        id = request.POST['id']
-        password = request.POST['password']
-        role = request.POST['role']
-        if role == 'student':
-            user = authenticate(request, student_id=id, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('dashboard')
-            else:
-                messages.error(request, 'Invalid credentials. Please try again.')
-        elif role == 'teacher':
-            user = authenticate(request, teacher_id=id, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('dashboard')
-            else:
-                messages.error(request, 'Invalid credentials. Please try again.')
-        elif role == 'admin':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            id = form.cleaned_data['id']
+            password = form.cleaned_data['password']
+            role = request.POST['role']
             
-            pass
-    return render(request, 'account/login.html')
+            user = authenticate(request, id=id, password=password, role=role)
+            if user is not None:
+                login(request, user)
+                return redirect('account:dashboard')
+            else:
+                messages.error(request, 'Invalid credentials. Please try again.')
+    else:
+        form = LoginForm()
+    return render(request, 'account/login.html', {'form':form})
 
+def add_Teacher():
+    
+    t = Teacher.objects.create(teacher_id='112', username='112', fullName='Taukekhan', password=make_password('happy'), email='Taukekhan@sdu.edu.kz')
+    t.save()
+
+def add_Student():
+    s = Student.objects.create(student_id='', username='', fullName='', password=make_password(''), email='')
+    s.save()
