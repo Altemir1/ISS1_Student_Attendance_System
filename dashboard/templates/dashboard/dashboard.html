@@ -7,4 +7,8 @@
         <p>Welcome, you are a Teacher!</p>
         <!-- Add additional content specific to teachers -->
 {% endif %}
-<a href="{% url 'account:logout' %}?next=/login/">Logout</a>
+<form method="post" action="{% url 'account:logout' %}">
+        {% csrf_token %}
+        <input type="submit" value="Logout">
+</form>
+    
