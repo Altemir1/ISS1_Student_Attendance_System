@@ -134,6 +134,6 @@ LOGOUT_REDIRECT_URL = '/account/login/'
 AUTH_USER_MODEL = 'account.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
-    'account.backends.CustomUserBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'account.backends.CustomUserBackend',
 ]
