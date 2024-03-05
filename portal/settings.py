@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-*_ff+e-1h7y5o#u1&h_$^x*qg&=g^ona4g5@z88+je$+p1-f_#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '63da-91-147-99-146.ngrok-free.app']
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dashboard.apps.DashboardConfig'
+    'dashboard.apps.DashboardConfig',
+    'attendance_registration.apps.AttendanceRegistrationConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -134,6 +136,6 @@ LOGOUT_REDIRECT_URL = '/account/login/'
 AUTH_USER_MODEL = 'account.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
-    'account.backends.CustomUserBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'account.backends.CustomUserBackend',
 ]

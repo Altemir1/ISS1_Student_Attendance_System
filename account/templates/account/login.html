@@ -6,14 +6,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy University</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <script src="{% static 'js/script.js' %}"></script>
-</head>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <script src="{% static 'js/login.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
 
 <body>
   <h1 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h1>
   <div class="wrapper">
-    <form action="{% url 'account:login' %}" method="post">
+    <form action="{% url 'account:login' %}" method="post" id="login-form">
       {% csrf_token %}
       <div class="role-selector">
         <span id='teacher' class="role" onclick="selectRole('teacher')">Teacher</span>
@@ -21,7 +22,7 @@
         <span id='admin' class="role" onclick="selectRole('admin')">Admin</span>
       </div>
       <div class="login-box">
-      
+
           <div class="input-box">
             {{ form.id }}
           </div>
@@ -32,18 +33,37 @@
             <a href="#">Forgot Password?</a>
           </div>
           <input id="selectedRole" name="role" type="hidden" value="student">
-          <input type="submit" class="btn" value="Log in">
+          <input type="submit" class="btn" value="Log in" onclick="loadingIndicator()"/>
       </div>
     </form>
     {% if messages %}
-          <div class="error-messages">
-            {% for message in messages %}
-              <p style="color: red;">{{ message }}</p>
-            {% endfor %}
-          </div>
-        {% endif %}
-    
+    <div id="error-messages" class="error-messages">
+        {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+    </div>
+
+        <script>
+            // Function to hide the error messages after 30 seconds
+            setTimeout(function() {
+                var errorMessages = document.getElementById('error-messages');
+                if (errorMessages) {
+                    errorMessages.style.display = 'none';
+                }
+            }, 10000);  // 10 seconds
+        </script>
+    {% endif %}
   </div>
+
+    <div class="loading-overlay">
+            <i class="fas fa-spinner fa-spin text-primary"></i>
+    </div>
+
+    <script>
+      function loadingIndicator() {
+        $('.loading-overlay').show();
+        }
+    </script>
 </body>
 
 </html>
