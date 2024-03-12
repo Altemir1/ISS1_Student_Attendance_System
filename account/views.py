@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 from django.views.decorators.cache import never_cache
 
+
 @never_cache
 def user_login(request):
     if request.method == 'POST':

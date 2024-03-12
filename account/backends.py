@@ -20,4 +20,5 @@ class CustomUserBackend(ModelBackend):
             print(f"User authenticated: {user}")
             return user
 
+
         return None
