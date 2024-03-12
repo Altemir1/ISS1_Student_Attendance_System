@@ -5,7 +5,11 @@ function selectRole(role) {
     });
     selectedRoleElement.classList.add('active');
     document.getElementById('selectedRole').value = role;
-    
+}
 
-   
+function loadingIndicator(){
+    document.getElementById("loading-overlay").style.display = "flex"; // Show overlay
+    loadingTimeout = setTimeout(function() {
+            document.getElementById("loading-overlay").style.display = "none"; // Hide overlay
+        }, 120000);
 }

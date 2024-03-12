@@ -15,7 +15,7 @@ class AccountTests(TestCase):
             fullName='Test User',
             student_id='testid'
         )
-        
+
     def test_login_view(self):
         response = self.client.get(reverse('account:login'))
         self.assertEqual(response.status_code, 200)

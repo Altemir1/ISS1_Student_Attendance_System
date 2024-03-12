@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy University</title>
+    <link rel="stylesheet" href="{% static 'css/student_dashboard.css' %}">
+    <script src="{% static 'js/student_dashboard.js' %}"></script>
+</head>
+<body>
+{% with student=request.user.student %}
+        <!-- The rest of the dashboard.html content -->
+    <header>
+        <div class="header-right">
+            <div class="student-info">
+                <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.fullName }}</span></p>
+                <p><strong>ID:</strong> <span id="id">{{ student.student_id }}</span></p>
+                <p><strong>Advisor:</strong> <span id="advisorName">{{ student.advisor }}</span></p>
+                <p><strong>Major Program:</strong> <span id="majorProgram">{{ student.major_program }}</span></p>
+            </div>
+            <br>
+            <form method="post" action="{% url 'account:logout' %}">
+                {% csrf_token %}
+                <input type="submit" value="Logout">
+            </form>
+            <button onclick="changeTextColorAndRedirect(this, '{{ url_to_certificate }}');" class="certificate-btn">Certificate</button>
+        </div>
+    </header>
+   
+    <div class="main-container">
+    
+        <table>
+            <tr class="header-row">
+                <th>Code</th>
+                <th>Course name</th>
+                <th>Credits</th>
+                <th>ECTS</th>
+                <th>Hours</th>
+                <th>✔</th>
+                <th>✖</th>
+                <th>P</th>
+                <th>Absence % (Limit 30%)</th>
+            </tr>
+            <tbody>
+                {% for course in student_courses %}
+                <tr>
+                    <td><a href="{{ course.course_link }}" class="course-link">{{ course.course_code }}</a></td>
+                    <td><a href="{{ course.course_link }}" class="course-link">{{ course.course_name }}</a></td>
+                    <td>{{ course.credits }}</td>
+                    <td>{{ course.ects }}</td>
+                    <td>{{ course.hours }}</td>
+                    <td>{{ course.attendance_count }}</td>
+                    <td>{{ course.absence_count }}</td>
+                    <td>{{ course.present_count }}</td>
+                    <td>{{ course.absence_percentage }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endwith %}
+    
+</body>
+</html>

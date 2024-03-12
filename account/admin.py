@@ -1,8 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import Student, Teacher, CustomUser
+from .forms import TeacherCreationForm, StudentCreationForm
 # Register your models here.
 
 admin.site.register(CustomUser, UserAdmin)
-admin.site.register(Student)
-admin.site.register(Teacher)
+
+class CustomTeacherAdmin(UserAdmin):
+    add_form = TeacherCreationForm
+    model = Teacher
+
+admin.site.register(Teacher, CustomTeacherAdmin)
+
+class CustomStudentAdmin(UserAdmin):
+    add_form = StudentCreationForm
+    model = Student
+    list_display = ('student_id', 'username', 'fullName', 'email', 'advisor', 'major_program')
+
+admin.site.register(Student, CustomStudentAdmin)
