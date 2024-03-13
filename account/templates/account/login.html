@@ -1,57 +1,59 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy University</title>
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
   <script src="{% static 'js/login.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap">
   </head>
 
 <body>
-  <h1 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h1>
+  <h2 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h2>
   <div class="wrapper">
-    <form action="{% url 'account:login' %}" method="post" id="login-form">
-      {% csrf_token %}
-      <div class="role-selector">
-        <span id='teacher' class="role" onclick="selectRole('teacher')">Teacher</span>
-        <span id='student' class="role active" onclick="selectRole('student')">Student</span>
-        <span id='admin' class="role" onclick="selectRole('admin')">Admin</span>
-      </div>
-      <div class="login-box">
+    <form class = "form" action="{% url 'account:login' %}" method="post" id="login-form">
+        {% csrf_token %}
+          <div class="role-selector">
+            <span id='teacher' class="role" onclick="selectRole('teacher')">Teacher</span>
+            <span id='student' class="role active" onclick="selectRole('student')">Student</span>
+          </div>
+          <div class="login-box">
 
-          <div class="input-box">
-            {{ form.id }}
+            <div class="input-box">
+              {{ form.id }}
+            </div>
+            
+            <div class="input-box">
+              {{ form.password }}
+            </div>
+            
+            <div class="forgot">
+              <a href="#">Forgot Password?</a>
+            </div>
+            
+            <input id="selectedRole" name="role" type="hidden" value="student">
+            <input type="submit" class="btn" value="Log in" onclick="loadingIndicator()"/>
           </div>
-          <div class="input-box">
-            {{ form.password }}
-          </div>
-          <div class="forgot">
-            <a href="#">Forgot Password?</a>
-          </div>
-          <input id="selectedRole" name="role" type="hidden" value="student">
-          <input type="submit" class="btn" value="Log in" onclick="loadingIndicator()"/>
-      </div>
     </form>
     {% if messages %}
     <div id="error-messages" class="error-messages">
         {% for message in messages %}
-            <p style="color: red;">{{ message }}</p>
+            <p style="color: red;text-align: center;">{{ message }}</p>
         {% endfor %}
     </div>
 
         <script>
-            // Function to hide the error messages after 30 seconds
+            // Function to hide the error messages after 10 seconds
             setTimeout(function() {
                 var errorMessages = document.getElementById('error-messages');
                 if (errorMessages) {
                     errorMessages.style.display = 'none';
                 }
-            }, 10000);  // 10 seconds
+            }, 6000);  // 10 seconds
         </script>
+
     {% endif %}
   </div>
 

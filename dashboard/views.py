@@ -11,4 +11,3 @@ def dashboard(request):
     elif request.user.is_teacher:    
         teacher_courses = Course.objects.filter(teacher=request.user.teacher)
         return render(request, 'dashboard/teacher_dashboard.html', {'teacher_courses': teacher_courses})
-     

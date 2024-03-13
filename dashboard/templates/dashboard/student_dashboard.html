@@ -7,6 +7,7 @@
     <title>Happy University</title>
     <link rel="stylesheet" href="{% static 'css/student_dashboard.css' %}">
     <script src="{% static 'js/student_dashboard.js' %}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap">
 </head>
 <body>
 {% with student=request.user.student %}
@@ -14,7 +15,7 @@
     <header>
         <div class="header-right">
             <div class="student-info">
-                <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.fullName }}</span></p>
+                <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.name }}</span></p>
                 <p><strong>ID:</strong> <span id="id">{{ student.student_id }}</span></p>
                 <p><strong>Advisor:</strong> <span id="advisorName">{{ student.advisor }}</span></p>
                 <p><strong>Major Program:</strong> <span id="majorProgram">{{ student.major_program }}</span></p>
