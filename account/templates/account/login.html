@@ -1,24 +1,45 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy University</title>
-  <link rel="stylesheet" href="{% static 'css/login.css' %}">
-  <script src="{% static 'js/login.js' %}"></script>
+  <link rel="stylesheet" href="{% static "css/login.css" %}">
+  <script src="{% static "js/login.js" %}"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap">
-  </head>
-
+  <style>
+    @font-face {
+      font-family: 'gilroy-600';
+      src: url('{% static 'fonts/Gilroy_Qaz/Gilroy-Semibold 2.ttf' %}') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
+</head>
+  
 <body>
-  <h2 class="header-line">Happy&nbsp;&nbsp;&nbsp;University</h2>
-  <div class="wrapper">
-    <form class = "form" action="{% url 'account:login' %}" method="post" id="login-form">
+  
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="left_part">
+    <h1 class="header-line">Happy&nbsp;&nbsp;University</h1>
+    <img src="{% static 'img/image.png' %}" alt="Image of a girl wearing glasses and holding a book" >
+  </div>
+
+  <div class="right_part">
+    <h1 class="header-line">Log in</h1>
+    <form class = "form" action="{% url 'account:login' %}"onsubmit="showLoadingOverlay()" method="post" id="login-form">
         {% csrf_token %}
           <div class="role-selector">
             <span id='teacher' class="role" onclick="selectRole('teacher')">Teacher</span>
             <span id='student' class="role active" onclick="selectRole('student')">Student</span>
           </div>
+
           <div class="login-box">
 
             <div class="input-box">
@@ -29,43 +50,24 @@
               {{ form.password }}
             </div>
             
+            <input id="selectedRole" name="role" type="hidden" value="student">
+            <input type="submit" class="btn" value="Log in"/>
+            
             <div class="forgot">
               <a href="#">Forgot Password?</a>
             </div>
-            
-            <input id="selectedRole" name="role" type="hidden" value="student">
-            <input type="submit" class="btn" value="Log in" onclick="loadingIndicator()"/>
+
           </div>
     </form>
     {% if messages %}
-    <div id="error-messages" class="error-messages">
-        {% for message in messages %}
-            <p style="color: red;text-align: center;">{{ message }}</p>
-        {% endfor %}
-    </div>
-
-        <script>
-            // Function to hide the error messages after 10 seconds
-            setTimeout(function() {
-                var errorMessages = document.getElementById('error-messages');
-                if (errorMessages) {
-                    errorMessages.style.display = 'none';
-                }
-            }, 6000);  // 10 seconds
-        </script>
-
+      <div id="error-messages" class="error-messages">
+          {% for message in messages %}
+              <p style="color: red;text-align: center; font-size: 2.2vh; ">{{ message }}</p>
+          {% endfor %}
+      </div>
     {% endif %}
   </div>
 
-    <div class="loading-overlay">
-            <i class="fas fa-spinner fa-spin text-primary"></i>
-    </div>
-
-    <script>
-      function loadingIndicator() {
-        $('.loading-overlay').show();
-        }
-    </script>
 </body>
 
 </html>

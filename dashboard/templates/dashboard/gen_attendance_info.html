@@ -1,0 +1,55 @@
+{% extends "dashboard/student_dashboard.html" %}
+{% block content %}
+<div class="gen_attendance_info">
+        
+    <table>
+        
+        <tr class="header-row">
+            <th>Code</th>
+            <th>Course name</th>
+            <th>Credits</th>
+            <th>ECTS</th>
+            <th>Hours</th>
+            <th style="color:green;">✔</th>
+            <th style="color:red;">✖</th>
+            <th>P</th>
+            <th>Absence % (Limit 30%)</th>
+        </tr>
+        
+        <tbody>
+            <tr>
+                <td>css-325</td>
+                <td>dont know what is this as well</td>
+                <td>1+2+0</td>
+                <td>5</td>
+                <td>hey yo what is this </td>
+                <td>18</td>
+                <td>30</td>
+                <td>P</td>
+                <td>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" style="width:30%; background-color: rgb(255, 0, 0 );"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>css-325</td>
+                <td>dont know what is this as well</td>
+                <td>1+2+0</td>
+                <td>5</td>
+                <td>hey yo what is this </td>
+                <td>18</td>
+                <td>30</td>
+                <td>P</td>
+                <td>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" style="width:25%; background-color: rgb(255,  42.5 , 42.5 );"></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+{% endblock content %}

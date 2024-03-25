@@ -35,8 +35,8 @@ class Course(models.Model):
         return f"{self.course_id} {self.name}"
 
 class Attendance(models.Model):
-    course_id = models.CharField(max_length=12,unique=True,blank=False) # ex : 'css427-l-1' or 'css427-p-1'
-    entity_id = models.CharField(max_length=20, unique=True, blank=False) # Whoever this is Teacher or Student
+    course_id = models.CharField(max_length=12, unique=True, blank=False) # ex : 'css427-l-1' or 'css427-p-1'
+    entity_id = models.CharField(max_length=20, unique=True, blank=False) # Whoever this is Teacher or Student / 2 10 10 70 78
     registration_date = models.DateField(auto_now_add=True)  # Date of attendance
     registration_time = models.TimeField(auto_now_add=True)  # Time of attendance
     really_attended = models.BooleanField(blank=False)

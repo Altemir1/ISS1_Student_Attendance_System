@@ -6,10 +6,22 @@ function selectRole(role) {
     selectedRoleElement.classList.add('active');
     document.getElementById('selectedRole').value = role;
 }
+// Function to hide the error messages after 6 seconds
+setTimeout(function() {
+    
+    hideLoadingOverlay()
 
-function loadingIndicator(){
-    document.getElementById("loading-overlay").style.display = "flex"; // Show overlay
-    loadingTimeout = setTimeout(function() {
-            document.getElementById("loading-overlay").style.display = "none"; // Hide overlay
-        }, 120000);
+    var errorMessages = document.getElementById('error-messages');
+    
+    if (errorMessages) {
+        errorMessages.style.display = 'none';
+    }
+
+}, 6000);  // 6 seconds
+
+function showLoadingOverlay() {
+    document.getElementById("loading-overlay").style.display = "flex";
+}
+function hideLoadingOverlay() {
+    document.getElementById("loading-overlay").style.display = "none";
 }

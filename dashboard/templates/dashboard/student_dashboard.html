@@ -7,61 +7,58 @@
     <title>Happy University</title>
     <link rel="stylesheet" href="{% static 'css/student_dashboard.css' %}">
     <script src="{% static 'js/student_dashboard.js' %}"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap">
+    <style>
+        @font-face {
+          font-family: 'gilroy-600';
+          src: url('{% static 'fonts/Gilroy_Qaz/Gilroy-Semibold 2.ttf' %}') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+      </style>
 </head>
 <body>
 {% with student=request.user.student %}
-        <!-- The rest of the dashboard.html content -->
-    <header>
-        <div class="header-right">
+    
+    <div class="header">
+        <div class="header_left">
+            <h1>Electronic Attendance</h1>
+        </div>
+        
+        <div class="header_right">
+            <div class="student_profile_pic">
+                    {% comment %} The Pic will be placed here {% endcomment %}
+            </div>
+            
             <div class="student-info">
-                <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.name }}</span></p>
+                <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.fullName }}</span></p>
                 <p><strong>ID:</strong> <span id="id">{{ student.student_id }}</span></p>
                 <p><strong>Advisor:</strong> <span id="advisorName">{{ student.advisor }}</span></p>
                 <p><strong>Major Program:</strong> <span id="majorProgram">{{ student.major_program }}</span></p>
             </div>
-            <br>
-            <form method="post" action="{% url 'account:logout' %}">
-                {% csrf_token %}
-                <input type="submit" value="Logout">
-            </form>
-            <button onclick="changeTextColorAndRedirect(this, '{{ url_to_certificate }}');" class="certificate-btn">Certificate</button>
         </div>
-    </header>
-   
-    <div class="main-container">
-    
-        <table>
-            <tr class="header-row">
-                <th>Code</th>
-                <th>Course name</th>
-                <th>Credits</th>
-                <th>ECTS</th>
-                <th>Hours</th>
-                <th>✔</th>
-                <th>✖</th>
-                <th>P</th>
-                <th>Absence % (Limit 30%)</th>
-            </tr>
-            <tbody>
-                {% for course in student_courses %}
-                <tr>
-                    <td><a href="{{ course.course_link }}" class="course-link">{{ course.course_code }}</a></td>
-                    <td><a href="{{ course.course_link }}" class="course-link">{{ course.course_name }}</a></td>
-                    <td>{{ course.credits }}</td>
-                    <td>{{ course.ects }}</td>
-                    <td>{{ course.hours }}</td>
-                    <td>{{ course.attendance_count }}</td>
-                    <td>{{ course.absence_count }}</td>
-                    <td>{{ course.present_count }}</td>
-                    <td>{{ course.absence_percentage }}%</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 
-{% endwith %}
+    </div>
     
+    {% block content%}{% endblock content %}
+
+    <div class="footer">
+
+        <form method="post" action="{% url 'account:logout' %}">
+            {% csrf_token %}
+            <input type="submit" style="margin-left:5vw;color: red;" value="Log out">
+        </form>
+        
+        <form method="post" action="{% url 'account:logout' %}">
+            {% csrf_token %}
+            <input type="submit" style="color: #FFFFFF; background-color:#F6A667;" value="Certificate">
+        </form>
+
+    </div>
+    <script>
+        function submitForm() {
+            document.getElementById("file_submit_form").submit();
+        }
+    </script>
+{% endwith %}
 </body>
 </html>

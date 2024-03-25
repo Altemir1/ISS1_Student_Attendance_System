@@ -7,7 +7,7 @@ from attendance.models import Course
 def dashboard(request):
     if request.user.is_student:
         student_courses = Course.objects.filter(schedule__student=request.user.student)
-        return render(request, 'dashboard/student_dashboard.html', {'student_courses': student_courses})
+        return render(request, 'dashboard/gen_attendance_info.html', {'student_courses': student_courses})
     elif request.user.is_teacher:    
         teacher_courses = Course.objects.filter(teacher=request.user.teacher)
         return render(request, 'dashboard/teacher_dashboard.html', {'teacher_courses': teacher_courses})

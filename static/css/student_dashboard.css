@@ -1,93 +1,234 @@
+::-webkit-scrollbar {
+  display: none;
+}
 body {
+  background-color: #263B83; 
+  width: 100vw;
   margin: 0;
-  padding: 40px 0; 
-  background-color:#001637
-
-}
-
-* {
-  box-sizing: border-box; 
-}
-
-header {
-  background-color:#001637; 
-  padding: 10px 20px; 
+  padding: 0;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  cursor: pointer;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100vw;
+  height: 25vh;
+  
+}
+.header_left{
+  width: 50vw;
+}
+.header_left h1{
+  margin-left: 3vw;
+  margin-top: 5vh;
+  font-family: gilroy-600;
+}
+.header_right{
+  width: 49vw;
+  display: flex;
+  justify-content: end;
+  margin-right: 1vw;
+}
+.student-info{
+  font-family: gilroy-600;
+}
+.gen_attendance_info{
+  min-height: 60vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vh;
+  flex-grow: 1;
+}
+
+table {
+  border-collapse: collapse;
+  width: 90vw;
+  height: auto;
+}
+
+th{
+  background-color: #F6A667;
+  height: 5vh;
+  cursor: pointer;
+  font-family: gilroy-600;
+}
+th:first-child {
+  border-top-left-radius: 10px;
+  width: 5vw;
+}
+th:last-child {
+  border-top-right-radius: 10px;
+}
+
+td{
+  border: 1px solid #000000;
+  background-color: #FFFFFF;
+  text-align: center;
+  cursor: pointer;
+  font-family: gilroy-600;
+  height: 5vh;
+}
+
+tr:hover {
+  background-color: #263B83;
+}
+
+.footer{
+  max-height: 15vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5vh;
+}
+.footer input{
+  margin-right: 5vw;
+  background-color: #FFFFFF;
+  height: 4.5vh;
+  width: 14vw;
+  border-radius: 20px;
+  font-family: gilroy-600;
+  border: none;
+  cursor: pointer;
+}
+.progress-bar {
+  width: 100%; /* Adjust width as needed */
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 5px; /* Optional rounded corners */
+  position: relative; /* Needed for progress label positioning */
+}
+.progress-fill {
+  height: 100%;
+  background-color: linear-gradient(to right, #ddd 0%, red 100%);  /* Initial gradient */
+  background-size: 0%; /* Initial fill size */
+  transition: background-size 3s ease-in-out; /* Transition for filling effect */
+}
+.progress-label {
+  position: absolute; /* Position label within the progress bar */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the label */
+  font-size: 12px; /* Adjust font size as needed */
+}
+/* indivAttInfo */
+.specific_att_info{
+  width: 100vw;
+}
+.spec_att_header{
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }
-
-.student-info {
-  margin-top: -45px;
-  text-align: 100px;
-  color:white
- 
+.spec_info_table_wrapper{
+  min-height: 50vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vh;
+  flex-grow: 1;
 }
-.student-info p {
-  margin-bottom:-7px; 
+.spec_course_info{
+  margin-left: 5vw;
+  margin-right: 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.spec_course_info h1{
+  font-size: 3.3vh;
+  text-align: left;
+  font-family: gilroy-600;
+  color: #F6A667;
+
+}
+.spec_course_info h2{
+  font-size: 2.3vh;
+  font-family: gilroy-600;
+  text-align: left;
+
 }
 
-.main-container {
-    background-color: #e0e9f7; 
-    width: 100%; 
-    margin: 5px auto; 
-    border-radius: 5px; 
-    padding: 5px;
-    
+#dropdown ,option{
+  border-radius: 20px;
+  border: none ; 
+  height: 6vh;
+  width: 14.3vw;
+  font-size: 2.3vh;
+  font-family: gilroy-600;
+  background-color: #162350;
+  color: #FFFFFF;
+}
+
+
+.notice_document_submition{
+  margin-left: 5vw;
+  margin-bottom: 10vh;
+}
+.notice_document_submition h1{
+  font-family: gilroy-600;
+  font-size: 3.3vh;
+  color: #F6A667;
+}
+.order_document{
+  display: flex;
+  align-items: center;
   
-  }
-  
-  .certificate-btn {
-    padding: 10px 20px;
-    background-color: #c6d3e6;
-    color: #001637;
-    font-size: 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    position: absolute; 
-    top: 500px;
-    right: 10px; 
-  }
-
-.table-container {
-  background-color: #f8f8f8;
-  padding: 15px;
-  border-radius: 5px;
-  margin: 20px auto 10px;
-  margin-top: 40px;
-
-
 }
-
-  table {
-    width: 70%;
-    margin: 55px auto 35px; 
-    border-collapse: collapse;
-    table-layout: auto;
-
-  
+.wrapperh1{
+  background-color: #F6A667;
+  height: 6vh;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-th, td {
-  border: 1px solid #d9d9d9;
+.wrapperh1 h1{
+  color: #FFFFFF;
+  width: 20vw;
+  text-align: center; 
+}
+#order_option{
+  margin: 2.5%;
+  width: 50vw;
+  font-size: 2.3vh;
+  font-family: gilroy-600;
+  border: none ;
+  height: 6vh;
+  color: #831f1f;
+  border-radius: 20px;
   text-align: center;
-  padding: 10px 5px; 
-  font-size: 14px;
 }
-
-th {
-  background-color: #001637;
-  color: white;
+.file-input-button{
+  width: 30vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+  height: 6vh;
+  font-family: gilroy-600;
+  font-size: 3.3vh;
+  border: none;
+  text-align: center;
 }
-
-tr {
-  background-color: #ffffff;
+.submit_cancel_button_container{
+  margin-top: 5vh;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10vh;
 }
-tr:nth-child(even) {
-  background-color: #cccccc; 
+.submit_cancel_button_container input{
+  border-radius: 20px;
+  height: 4.5vh;
+  font-family: gilroy-600;
+  font-size: 3.3vh;
+  border: none;
+  width:14vw;
 }
-th.course-name {
-  width: 20%; 
-}
-
