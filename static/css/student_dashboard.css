@@ -25,6 +25,7 @@ body {
   margin-left: 3vw;
   margin-top: 5vh;
   font-family: gilroy-600;
+  color:#F6A667;
 }
 .header_right{
   width: 49vw;
@@ -35,6 +36,14 @@ body {
 .student-info{
   font-family: gilroy-600;
 }
+.student-info strong{
+  color: white;
+}
+
+.student-info span{
+  color: #F6A667;
+}
+
 .gen_attendance_info{
   min-height: 60vh;
   width: 100vw;
