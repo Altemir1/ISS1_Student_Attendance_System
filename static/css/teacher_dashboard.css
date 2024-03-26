@@ -1,86 +1,136 @@
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #001637; /* Темно-синий фон */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Центрирование по горизонтали */
-  justify-content: center; /* Центрирование по вертикали */
-  min-height: 100vh; /* Минимальная высота страницы */
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, monospace;
+  background:#0d467f;
+  margin: 0px;
+  padding: 0px;
+  
 }
-
-* {
-  box-sizing: border-box;
-}
-
 header {
-  width: 100%; 
-  padding: 20px 50px; 
-  background-color: #001637; /* Темно-синий фон */
   display: flex;
-  justify-content: space-between; /* Распределение пространства между элементами */
-  align-items: center; /* Центрирование элементов по вертикали */
-}
-
-.teacher-info {
+  justify-content: space-between; 
+  align-items: flex-start; 
+  padding: 0 20px; 
+  background: #0d467f;
   color: white;
 }
 
-.schedule {
-  background-color:white; /* Светло-синий фон */
-  width: 100%; /* Ширина контейнера */
-  margin: auto; /* Авто-маргины для центрирования */
-  height: 60vh; /* Высота контейнера составляет половину высоты экрана */
-  padding: 1rem; /* Внутренний отступ */
+.header-left {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Центрирование элементов внутри */
-  border-radius: 5px; /* Скругление углов */
-  justify-content: center;
+  align-items: flex-start;
+  padding-left: 20px;
+  margin-top: 10px;
+ 
 }
 
-table {
-  width: 70%; /* Ширина таблицы */
-  border-collapse: collapse; /* Убираем двойные границы между ячейками */
-  margin-top: 5px;
-
-  
+.year-term-container {
+  display: flex;
+  align-items: center; 
+  gap: 10px; 
 }
 
-th, td {
-  border: 1px solid #d9d9d9;
-  text-align: center;
-  padding: 10px;
+.year{
+  border-radius: 30px;
+  position: relative; 
+  right: -120px; 
+  top: -35px; 
+}
+.info-wrapper {
+  display: grid;
+  grid-template-rows: auto; 
+  row-gap: 10px;
   font-size: 14px;
+  margin-top: 40px;
+
 }
 
-th {
-  background-color: #001637; /* Темно-синий фон заголовков */
-  color: white;
-}
+.attendance-container {
+  max-width: 700px;
+  max-height: 500px;
+  margin: 70px auto;
+  background: rgb(239, 238, 245);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid black;
+  margin-left: 20px;
 
-tr:nth-child(even) {
-  background-color: #cccccc; /* Цвет для четных строк */
 }
+.some-inner-element {
+  margin-bottom: 10px;
 
-back {
-  padding: 30px;
-  text-align: left;
-  width: 100%;
-}
-
-back button {
-  background-color: #e0e9f7; 
-  color: #001637; 
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-back button:hover {
-  background-color: orange; /* Цвет при наведении */
 }
 
 
+.attendance-table {
+  width: 100%; 
+  margin: 30 auto; 
+  border-collapse: collapse;
+  text-align: center;
+  color:rgb(237, 164, 81) ;
+  max-height: 300px;
+
+}
+
+.attendance-table th, .attendance-table td {
+  padding: 11px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black; 
+  border-right: 1px solid black;
+}
+
+.attendance-table th {
+  background: rgb(237, 164, 81);
+  color: #000000;
+  border-bottom: 1px solid black;
+}
+.attendance-table td{
+  color:black;
   
+
+}
+.attendance-table a.course-link {
+  color: #c56c07;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+th:first-child, td:first-child {
+  border-left: none; 
+}
+
+th:last-child, td:last-child {
+  border-right: none; 
+  
+}
+
+
+.footer {
+  text-align: left;
+  padding: 10px 0; 
+  font-size: 12px;
+
+}
+.logout-button {
+  padding: 5px 15px;
+    border:none;
+    color: white;
+    margin: 22px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 63px;
+
+}
+
+.logout-button {
+  background-color:rgb(237, 164, 81);
+  color:white;
+
+}
+
+.logout-button:hover {
+  background-color: #e74c3c;
+}
+

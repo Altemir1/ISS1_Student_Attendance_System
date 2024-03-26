@@ -1,0 +1,130 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, monospace;
+    background-color: #0d467f; /* Фон страницы */
+    color: white;
+}
+
+header {
+  display: flex;
+  justify-content: center; 
+  align-items: left; 
+  padding: 0 20px; 
+  background: #0d467f;
+  color: white;
+  flex-direction: column;
+  font-size: 16px;
+  
+}
+
+.header-left{ 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+.header-right {
+    padding-left: 977.12px;
+    font-size: 14px;
+    margin-top:-50px;
+  
+  }
+
+  .schedule-container {
+    padding: 107.899px;
+}
+
+.class-session {
+    background-color: white;
+    border-radius: 30px;
+    margin-bottom: 5px; /* Расстояние между элементами */
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для элемента */
+    color: #333; 
+    padding:20px
+}
+
+.class-session:not(:last-child) {
+    margin-bottom: 10px; /* Расстояние между элементами */
+}
+
+.time, .room, .class-name {
+    margin-right: 5px; /* Расстояние между текстовыми элементами */
+}
+
+.attendance-button {
+    padding: 10px 20px;
+    background-color: #e67e22;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer; /* Курсор в виде руки при наведении на кнопку */
+    transition: background-color 0.3s; /* Плавное изменение фона при наведении */
+}
+
+.attendance-button:hover {
+    background-color: #d35400; /* Цвет кнопки при наведении */
+}
+
+.footer {
+    text-align: left;
+    padding: 10px 0; 
+    font-size: 12px;
+  
+  }
+  .logout-button {
+    padding: 5px 15px;
+      border:none;
+      color: white;
+      margin: 22px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 3px;
+  
+  }
+  
+  .logout-button {
+    background-color:rgb(237, 164, 81);
+    color:white;
+  
+  }
+  
+  .logout-button:hover {
+    background-color: #e74c3c;
+  }
+
+.goBack{
+  background-color: rgb(237, 164, 81) ;
+  padding: 5.5px 15px;
+  border:none;
+  color: white;
+  margin: 22px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 3px;
+
+}
+.goBack:hover {
+background-color: #d35400; /* Темно-оранжевый цвет кнопки при наведении */
+}
+
+.goBack:active {
+background-color: #e74c3c; /* Более тёмный оттенок при нажатии */
+}
+.goBack {
+  display: inline-block;
+}
+
+.goBack--inline {
+  display: inline-block;
+  margin-left: 10px;
+}

@@ -1,6 +1,6 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import check_password
 
 class CustomUserBackend(ModelBackend):
     def authenticate(self, request, id=None, password=None, **kwargs):
@@ -19,6 +19,5 @@ class CustomUserBackend(ModelBackend):
         if check_password(password, user.password):
             print(f"User authenticated: {user}")
             return user
-
 
         return None

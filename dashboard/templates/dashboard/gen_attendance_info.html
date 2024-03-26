@@ -1,0 +1,52 @@
+{% extends "dashboard/student_dashboard.html" %}
+{% block content %}
+{% load progress_bar %}
+<div class="gen_attendance_info">
+        
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th>Code</th>
+                <th>Course name</th>
+                <th>Credits</th>
+                <th>ECTS</th>
+                <th>Hours</th>
+                <th >✅</th>
+                <th >❌</th>
+                <th>P</th>
+                <th>Absence % (Limit 30%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in student_courses %}
+            <tr>
+                <td><a href="{% url 'dashboard:student_att' course_id=course.course_id student_id=student.id %}" class="course-link">{{ course.course_code }}</a></td>
+                <td><a href="{% url 'dashboard:student_att' course_id=course.course_id student_id=student.id %}" class="course-link">{{ course.course_name }}</a></td>
+                <td>{{ course.credits }}</td>
+                <td>{{ course.ects }}</td>
+                <td>{{ course.attendance_stats.total_hours }}</td>
+                <td>
+                    <!-- Display the number of present classes here -->
+                    {{ course.attendance_stats.present_hours }}
+                </td>
+            
+                <td>
+                    <!-- Display the number of absent classes here -->
+                    {{ course.attendance_stats.absent_hours }}
+                </td>
+                <td>
+                    {{ course.attendance_stats.p_hours }}
+                </td>
+                <td>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" >{{ course.attendance_stats|calculate_progress }}%</div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock content %}

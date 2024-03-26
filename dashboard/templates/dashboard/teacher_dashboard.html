@@ -4,45 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy University</title>
+    <title>Attendance System</title>
     <link rel="stylesheet" href="{% static 'css/teacher_dashboard.css' %}">
     <script src="{% static 'js/teacher_dashboard.js' %}"></script>
 </head>
 <body>
-{% with teacher=request.user.teacher %}
+    {% with teacher=request.user.teacher %}
     <header>
         <div class="header-left">
-            <div class="teacher-info">
-                <p><strong>Name-Surname:</strong> <span id="teacherName">{{ teacher.fullName }}</span></p>
-                <p><strong>Status:</strong> <span id="status">{{ teacher.status }}</span></p>
+            <h1>Electronic Attendance</h1>        
+        </div>       
+                  
+        <div class="info-wrapper">
+            <div class="teacher-info"> 
+                <p>Name-Surname:<span id="teacherName">{{ teacher.fullName}}</span></p>
+                <p>Status:<span id="majorProgram">{{ teacher.status }} </span></p>        
             </div>
         </div>
-        <form method="post" action="{% url 'account:logout' %}">
-            {% csrf_token %}
-            <input type="submit" value="Logout">
-        </form>
     </header>
-    <div class="schedule">
-        <table>
-            <tr class="header-row">
-                <th>Code</th>
-                <th>Course name</th>
-            </tr>
-            <tbody>
-                {% for course in teacher_courses %}
+        <section class="attendance-container">
+           <table class="attendance-table">
+                <thead>
                     <tr>
-                        <td><a href="{{ course.course_link }}" class="course-link">{{ course.course_code }}</a></td>
-                        <td><a href="{{ course.course_link }}" class="course-link">{{ course.course_name }}</a></td>
+                        <th>Code</th>
+                        <th>Course name</th>
+                    
                     </tr>
+                </thead>
+                <tbody>
+                {% for course in teacher_courses %}
+                    <tr> 
+                    <td><a href="{% url 'dashboard:course_dashboard' course_id=course.course_id teacher_id=teacher.id %}" class="course-link">{{ course.course_code }}</a></td>
+                    <td>{{ course.course_name }}</td>
+                    
+                    </tr>
+                
                 {% endfor %}
             </tbody>
-        </table>
-    </div>
-    <back>
-        <button onclick="goBack()">Back</button>
-    </back>
+            </table>
+        </section>
+              
+           <div class="footer">
+            <form method="post" action="{% url 'account:logout' %}">
+                {% csrf_token %}
+                <input type="submit"  type="button" class="logout-button" value="Log out">
+            </form>
+
+        </div>
 {% endwith %}
 </body>
 </html>
-   
- 
+

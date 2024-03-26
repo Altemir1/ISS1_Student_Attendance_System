@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System</title>
+    <link rel="stylesheet" href="{% static 'css/course_dashboard.css' %}">
+    <script src="{% static 'js/course_dashboard.js' %}"></script>
+</head>
+<body>
+{% with teacher=request.user.teacher %}
+    <header>
+        <div class="header-left">
+            <h1>Electronic Attendance</h1>     
+
+        </div>
+     
+        <div class="header-right">
+            <div class="teacher-info"> 
+                <p>Name-Surname:<span id="teacherName">{{ teacher.fullName}}</span></p>
+                <p>Status:<span id="majorProgram">{{ teacher.status }} </span></p>      
+            </div>
+        </div>
+    </header>
+    
+    <section class="attendance-container">
+        <div class="schedule-container">
+        {% for schedule in schedules %}
+          <div class="class-session">
+            <span class="time">{{ schedule.day_of_week }}</span>
+            <span class="time">{{ schedule.start_time|time:"H:i" }}-{{ schedule.end_time|time:"H:i" }}</span>
+            <span class="room">{{ schedule.classroom }}</span>
+            <span class="class-name">
+              <a  class="course-link">
+                {{ schedule.course.course_name }} {{ schedule.group }}
+              </a>
+            </span>
+            <button class="attendance-button" onclick="takeAttendance('{{ schedule.schedule_id }}')">Take an attendance</button>
+          </div>
+        {% endfor %}
+        </div>
+      </section>
+    
+    <div class="footer">
+        <form method="post" action="{% url 'account:logout' %}">
+            {% csrf_token %}
+            <input type="submit"  type="button" class="logout-button" value="Log out">
+        </form>
+        <button class="goBack goBack--inline" onclick="goBack()">Go back</button>
+    </div> 
+{% endwith %}
+</body>
+</html>
+
+

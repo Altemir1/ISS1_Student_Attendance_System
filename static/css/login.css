@@ -1,134 +1,130 @@
-* {
+::-webkit-scrollbar {
+    display: none;
+}
+body {
+    background-color: #263B83; 
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100vw;
+    height: 100vh;  
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.left_part{
+    width:50vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #001637;
-    width: 100%;
-}
-
-.header-line {
-    text-align: center;
-    font-size: 70px;
-    color: #FF9417;
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    font-size: 6vw;
-}
-
-.header-line::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -10px;
-    width: 100%;
-    height: 2px;
-    background-color: #ffffff;
-}
-
-.wrapper {
-    max-width: 400px;
-    width: 100%;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-}
-
-.role-selector {
-    display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
+    min-width: 300px;
+}
+.left_part h1{
+    margin-bottom: 5.5vh;
+    font-size: 3.3rem;
+    color: #FFFFFF;
+    width:28vw;
+    text-align: center;
+    font-family: gilroy-600;
+}
+.left_part img{
+    width:28vw;
+    height: 49vh;
+    min-width: 280px;
 }
 
-.role {
-    background: transparent;
-    border: none;
-    margin: 0 10px;
-    padding: 10px 20px;
-    color: white;
-    font-size: 18px;
+.right_part{
+    width:50vw;
+    height: 100vh;
+    background-color: #F7FDFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    min-width: 300px;
+}
+
+.header-line{
+    font-family: gilroy-600;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.role-selector{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5%;
+    width: 18.2vw;
+}
+.role{
+    font-size: 2.9vh;
+    color: #A0A0A0;
     cursor: pointer;
+    font-family: gilroy-600;
 }
-
 .role.active, .role:hover {
-    color: #FF9417;
+    color: #F6A667;
     text-decoration: underline;
 }
-
-
-.login-box {
-    text-align: center;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 360px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
+.login-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-.input-box {
-    background-color: #e0e0e0;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
-.input-box input {
-    width: 100%;
-    height: 51px;
-    padding: 10px;
-    background-color: #e0e0e0;
-    color: #333;
-    font-size: 20px;
-    border: none;
+.login-box input{
+    margin:0.6vh;
+    height: 5.1vh;
+    width: 24vw;
     border-radius: 5px;
+    border: 1px solid #D5D5D5 ;
+    font-size: 2.2vh;
+    font-family: gilroy-600;
+} 
+.btn{
+    background-color:#263B83;
+    color: #FFFFFF;
+    font-family: gilroy-600;
+    
 }
-
-.forgot a {
-    color: #001637;
-    text-decoration: none;
-    font-size: 16px;
-    display: block;
-    margin-top: 5px;
+.forgot{
+    width: 24vw;
+    align-items:flex-end;
+    font-size: 2.2vh;
+    height: 5.1vh;
     text-align: right;
+    font-family: gilroy-600;
 }
 
-.btn {
-    background-color: #001637;
-    color: white;
-    font-size: 23px;
-    width: 80px;
-    height: 45px;
-    line-height: 45px;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    display: block;
-    margin: 10px auto;
-    cursor: pointer;
-}
-/*ALLERT BLOCK*/
-.loading-overlay {
-    display: none;
+#loading-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 51, 102, 0.9); /* Semi-transparent white background */
+    background-color: rgba(0, 250, 29, 0.1); /* Semi-transparent white background */
+    display: none; /* Initially hidden */
     justify-content: center;
     align-items: center;
-}
+  }
+  
+  .spinner {
+    border: 20px solid rgba(0, 0, 0, 0.2); /* Light border color */
+    border-top: 20px solid #333; /* Dark border color */
+    border-radius: 5vw;
+    width: 5vw;
+    height: 5vw;
+    animation: spin 1s linear infinite; /* Spin animation */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
