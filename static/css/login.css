@@ -21,14 +21,16 @@ body {
     align-items: center;
     min-width: 300px;
 }
+
 .left_part h1{
     margin-bottom: 5.5vh;
     font-size: 3.3rem;
     color: #FFFFFF;
     width:28vw;
     text-align: center;
-    font-family: gilroy-600;
+    font-family: sduBold;
 }
+
 .left_part img{
     width:28vw;
     height: 49vh;

@@ -19,9 +19,9 @@
         </thead>
         <tbody>
             {% for course in student_courses %}
-            <tr>
-                <td><a href="{% url 'attendance:student_att' course_id=course.course_id student_id=student.id %}" class="course-link">{{ course.course_code }}</a></td>
-                <td><a href="{% url 'attendance:student_att' course_id=course.course_id student_id=student.id %}" class="course-link">{{ course.course_name }}</a></td>
+            <tr onclick="window.location.href='{% url 'attendance:student_att' course_id=course.course_id student_id=student.id %}'">
+                <td>{{ course.course_code }}</td>
+                <td>{{ course.course_name }}</td>
                 <td>{{ course.credits }}</td>
                 <td>{{ course.ects }}</td>
                 <td>{{ course.attendance_stats.total_hours }}</td>
@@ -38,9 +38,9 @@
                     {{ course.attendance_stats.p_hours }}
                 </td>
                 <td>
-                    
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar" >{{ course.attendance_stats|calculate_progress }}%</div>
+                    <div class="progress-container" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="width:80%;background-color: #F6A667; border: 1px solid black;margin:3%;border-radius:20px;"><div class="progress-bar" id="progressBar" style="width:50%; background-color:red;" ></div></div>
+                        {{ course.attendance_stats|calculate_progress }}%
                     </div>
                 </td>
             </tr>

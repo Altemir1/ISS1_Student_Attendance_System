@@ -24,7 +24,7 @@ body {
 .header_left h1{
   margin-left: 3vw;
   margin-top: 5vh;
-  font-family: gilroy-600;
+  font-family: sduBold;
   color:#F6A667;
 }
 .header_right{
@@ -85,6 +85,8 @@ td{
 
 tr:hover {
   background-color: #263B83;
+  scale: 1.03;
+  transition: 2s;
 }
 
 .footer{
@@ -106,25 +108,16 @@ tr:hover {
   cursor: pointer;
 }
 .progress-bar {
-  width: 100%; /* Adjust width as needed */
   height: 20px;
   background-color: #ddd;
-  border-radius: 5px; /* Optional rounded corners */
+  border-radius: 20px; /* Optional rounded corners */
   position: relative; /* Needed for progress label positioning */
 }
-.progress-fill {
-  height: 100%;
-  background-color: linear-gradient(to right, #ddd 0%, red 100%);  /* Initial gradient */
-  background-size: 0%; /* Initial fill size */
-  transition: background-size 3s ease-in-out; /* Transition for filling effect */
+.progress-container{
+  font-family: gilroy-600;
 }
-.progress-label {
-  position: absolute; /* Position label within the progress bar */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Center the label */
-  font-size: 12px; /* Adjust font size as needed */
-}
+
+
 /* indivAttInfo */
 .specific_att_info{
   width: 100vw;
