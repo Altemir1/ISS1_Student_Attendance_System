@@ -1,0 +1,69 @@
+{% extends "dashboard/student_dashboard.html" %}
+{% block content %}
+<div class="specific_attendance_info">
+    <div class="lecture">
+        <div class="teacher-info">
+            <h3>{{ course.course_code}} - {{ course.course_name }}</h3>
+            <p>01-N Alexandr Ivanov, Doctor of Science</p>
+        </div>
+        <button class="goBack" onclick="history.back();">Go back</button>
+        <table class="attendance-table" >
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Hour</th>
+                    <th>Attendance</th>
+                    <th>Place</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                   <td>{{ forloop.counter }}</td>
+                   <td>{{ attendance.date|date:"d.m.Y" }}</td>
+                   <td>{{ attendance.schedule.start_time|time:"H:i"  }}-{{ attendance.schedule.end_time|time:"H:i"  }}</td>
+                   <td>{% if attendance.present %}✅{% else %}❌{% endif %}</td>
+                   <td>{{ attendance.schedule.classroom }}</td>
+               
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if practice %}
+    <div class="practice">
+        <div class="teacher-info">
+            <h3>{{ course.course_code}} - {{ course.course_name }}</h3>
+            <p>01-N Alexandr Ivanov, Doctor of Science</p>
+        </div>    
+        
+        <button class="goBack" onclick="history.back();" style="display: none;">Go back</button>
+
+        <table class="attendance-table" >
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Hour</th>
+                    <th>Attendance</th>
+                    <th>Place</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                   <td>{{ forloop.counter }}</td>
+                   <td>{{ attendance.date|date:"d.m.Y" }}</td>
+                   <td>{{ attendance.schedule.start_time|time:"H:i"  }}-{{ attendance.schedule.end_time|time:"H:i"  }}</td>
+                   <td>{% if attendance.present %}✅{% else %}❌{% endif %}</td>
+                   <td>{{ attendance.schedule.classroom }}</td>
+               
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

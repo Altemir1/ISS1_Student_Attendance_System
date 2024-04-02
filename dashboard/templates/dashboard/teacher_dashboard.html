@@ -1,57 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance System</title>
     <link rel="stylesheet" href="{% static 'css/teacher_dashboard.css' %}">
     <script src="{% static 'js/teacher_dashboard.js' %}"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/image.png' %}">
+    <style>
+        @font-face {
+        font-family: 'gilroy-600';
+        src: url('{% static "fonts/Gilroy_Qaz/Gilroy-Semibold 2.ttf" %}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        }
+        @font-face {
+            font-family: 'sduBold';
+            src: url('{% static "fonts/sdu.otf" %}') format('opentype');
+        }
+    </style>
 </head>
+
 <body>
     {% with teacher=request.user.teacher %}
-    <header>
-        <div class="header-left">
-            <h1>Electronic Attendance</h1>        
+    <div class="header">
+        <div class="header_left">
+            <h1>Electronic Attendance</h1>
         </div>       
                   
-        <div class="info-wrapper">
+        <div class="header_right">
+            <div class="teacher_profile_pic">
+                    {% comment %} The Pic will be placed here {% endcomment %}
+            </div>
+            
             <div class="teacher-info"> 
-                <p>Name-Surname:<span id="teacherName">{{ teacher.fullName}}</span></p>
-                <p>Status:<span id="majorProgram">{{ teacher.status }} </span></p>        
+                <p><strong>Name-Surname:</strong><span id="teacherName">{{ teacher.fullName}}</span></p>
+                <p><strong>Status:</strong><span id="majorProgram">{{ teacher.status }} </span></p>        
             </div>
         </div>
-    </header>
-        <section class="attendance-container">
-           <table class="attendance-table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Course name</th>
-                    
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course in teacher_courses %}
-                    <tr> 
-                    <td><a href="{% url 'dashboard:course_dashboard' course_id=course.course_id teacher_id=teacher.id %}" class="course-link">{{ course.course_code }}</a></td>
-                    <td>{{ course.course_name }}</td>
-                    
-                    </tr>
-                
-                {% endfor %}
-            </tbody>
-            </table>
-        </section>
-              
-           <div class="footer">
-            <form method="post" action="{% url 'account:logout' %}">
-                {% csrf_token %}
-                <input type="submit"  type="button" class="logout-button" value="Log out">
-            </form>
-
-        </div>
-{% endwith %}
+    </div>
+    
+    {% block content%}{% endblock content %}
+        
+    <div class="footer">
+        <form method="post" action="{% url 'account:logout' %}">
+            {% csrf_token %}
+            <input type="submit" style="margin-left:5vw;color: red;" value="Log out">
+        </form>
+    </div>
+    
+    {% endwith %}
 </body>
+
 </html>
 

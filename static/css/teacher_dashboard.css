@@ -1,136 +1,140 @@
+::-webkit-scrollbar {
+  display: none;
+}
 body {
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, monospace;
-  background:#0d467f;
-  margin: 0px;
-  padding: 0px;
-  
-}
-header {
-  display: flex;
-  justify-content: space-between; 
-  align-items: flex-start; 
-  padding: 0 20px; 
-  background: #0d467f;
-  color: white;
-}
-
-.header-left {
+  background-color: #263B83; 
+  width: 100vw;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding-left: 20px;
-  margin-top: 10px;
- 
+  cursor: pointer;
 }
-
-.year-term-container {
+.header{
   display: flex;
-  align-items: center; 
-  gap: 10px; 
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100vw;
+  height: 25vh;
+}
+.header_left{
+  width: 50vw;
+}
+.header_left h1{
+  margin-left: 3vw;
+  margin-top: 5vh;
+  font-family: sduBold;
+  color:#F6A667;
+}
+.header_right{
+  width: 49vw;
+  display: flex;
+  justify-content: end;
+  margin-right: 1vw;
+}
+.teacher-info{
+  font-family: gilroy-600;
+}
+.teacher-info strong{
+  color: white;
+}
+.teacher-info span{
+  color: #F6A667;
 }
 
-.year{
-  border-radius: 30px;
-  position: relative; 
-  right: -120px; 
-  top: -35px; 
-}
-.info-wrapper {
-  display: grid;
-  grid-template-rows: auto; 
-  row-gap: 10px;
-  font-size: 14px;
-  margin-top: 40px;
-
+.gen_courses_info{
+  min-height: 60vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vh;
+  flex-grow: 1;
 }
 
-.attendance-container {
-  max-width: 700px;
-  max-height: 500px;
-  margin: 70px auto;
-  background: rgb(239, 238, 245);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid black;
-  margin-left: 20px;
-
-}
-.some-inner-element {
-  margin-bottom: 10px;
-
-}
-
-
-.attendance-table {
-  width: 100%; 
-  margin: 30 auto; 
+table {
   border-collapse: collapse;
+  width: 70vw;
+  height: auto;
+}
+
+th{
+  background-color: #F6A667;
+  height: 5vh;
+  cursor: pointer;
+  font-family: gilroy-600;
+}
+th:first-child {
+  border-top-left-radius: 10px;
+  width: 5vw;
+}
+th:last-child {
+  border-top-right-radius: 10px;
+}
+
+td{
+  border: 1px solid #000000;
+  background-color: #FFFFFF;
   text-align: center;
-  color:rgb(237, 164, 81) ;
-  max-height: 300px;
-
+  cursor: pointer;
+  font-family: gilroy-600;
+  height: 5vh;
 }
 
-.attendance-table th, .attendance-table td {
-  padding: 11px;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black; 
-  border-right: 1px solid black;
+tr:hover {
+  background-color: #263B83;
+  scale: 1.03;
+  transition: 2s;
 }
 
-.attendance-table th {
-  background: rgb(237, 164, 81);
-  color: #000000;
-  border-bottom: 1px solid black;
-}
-.attendance-table td{
-  color:black;
-  
-
-}
-.attendance-table a.course-link {
-  color: #c56c07;
-  text-decoration: none;
-  font-weight: bold;
+.choosing_current_course{
+  min-height: 60vh;
+  width: 100vw;
+  margin-left: 5vw;
 }
 
-th:first-child, td:first-child {
-  border-left: none; 
+.goBack{
+  font-family: gilroy-600;
+  color: #263B83;
+  border-radius: 15px;
+  margin:2%;
+  cursor: pointer;
+  border: 1px solid #F6A667;
+}
+.cource_segments_container{
+  margin-top: 5vh;
+  width: 100 vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+.cource_segment{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5vw;
+  width: 90vw;
 }
 
-th:last-child, td:last-child {
-  border-right: none; 
-  
+/* It Is not finished ok ) */
+
+.footer{
+  max-height: 15vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5vh;
 }
-
-
-.footer {
-  text-align: left;
-  padding: 10px 0; 
-  font-size: 12px;
-
+.footer input{
+  margin-right: 5vw;
+  background-color: #FFFFFF;
+  height: 4.5vh;
+  width: 14vw;
+  border-radius: 20px;
+  font-family: gilroy-600;
+  border: none;
+  cursor: pointer;
 }
-.logout-button {
-  padding: 5px 15px;
-    border:none;
-    color: white;
-    margin: 22px 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    margin-top: 63px;
-
-}
-
-.logout-button {
-  background-color:rgb(237, 164, 81);
-  color:white;
-
-}
-
-.logout-button:hover {
-  background-color: #e74c3c;
-}
-

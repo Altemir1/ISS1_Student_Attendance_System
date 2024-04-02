@@ -1,7 +1,0 @@
-
-
-
-function goBack() {
-  history.back();
-}
-

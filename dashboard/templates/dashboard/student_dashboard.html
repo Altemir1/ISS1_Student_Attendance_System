@@ -6,63 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy University</title>
     <link rel="stylesheet" href="{% static 'css/student_dashboard.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/image.png' %}">
     <script src="{% static 'js/student_dashboard.js' %}"></script>
     <style>
         @font-face {
-          font-family: 'gilroy-600';
-          src: url('{% static "fonts/Gilroy_Qaz/Gilroy-Semibold 2.ttf" %}') format('truetype');
-          font-weight: normal;
-          font-style: normal;
+        font-family: 'gilroy-600';
+        src: url('{% static "fonts/Gilroy_Qaz/Gilroy-Semibold 2.ttf" %}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
         }
         @font-face {
             font-family: 'sduBold';
             src: url('{% static "fonts/sdu.otf" %}') format('opentype');
-          }
-      </style>
+        }
+    </style>
 </head>
+
 <body>
-{% with student=request.user.student %}
-    
-    <div class="header">
-        <div class="header_left">
-            <h1>Electronic Attendance</h1>
-        </div>
+    {% with student=request.user.student %}
         
-        <div class="header_right">
-            <div class="student_profile_pic">
-                    {% comment %} The Pic will be placed here {% endcomment %}
+        <div class="header">
+            <div class="header_left">
+                <h1>Electronic Attendance</h1>
             </div>
             
-            <div class="student-info">
-                <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.fullName }}</span></p>
-                <p><strong>ID:</strong> <span id="id">{{ student.student_id }}</span></p>
-                <p><strong>Advisor:</strong> <span id="advisorName">{{ student.advisor }}</span></p>
-                <p><strong>Major Program:</strong> <span id="majorProgram">{{ student.major_program }}</span></p>
+            <div class="header_right">
+                <div class="student_profile_pic">
+                        {% comment %} The Pic will be placed here {% endcomment %}
+                </div>
+                
+                <div class="student-info">
+                    <p><strong>Name-Surname:</strong> <span id="studentName">{{ student.fullName }}</span></p>
+                    <p><strong>ID:</strong> <span id="id">{{ student.student_id }}</span></p>
+                    <p><strong>Advisor:</strong> <span id="advisorName">{{ student.advisor }}</span></p>
+                    <p><strong>Major Program:</strong> <span id="majorProgram">{{ student.major_program }}</span></p>
+                </div>
             </div>
+
         </div>
-
-    </div>
-    
-    {% block content%}{% endblock content %}
-
-    <div class="footer">
-
-        <form method="post" action="{% url 'account:logout' %}">
-            {% csrf_token %}
-            <input type="submit" style="margin-left:5vw;color: red;" value="Log out">
-        </form>
         
-        <form method="post" action="{% url 'account:logout' %}">
-            {% csrf_token %}
-            <input type="submit" style="color: #FFFFFF; background-color:#F6A667;" value="Certificate">
-        </form>
+        {% block content%}{% endblock content %}
 
-    </div>
-    <script>
-        function submitForm() {
-            document.getElementById("file_submit_form").submit();
-        }
-    </script>
-{% endwith %}
+        <div class="footer">
+
+            <form method="post" action="{% url 'account:logout' %}">
+                {% csrf_token %}
+                <input type="submit" style="margin-left:5vw;color: red;" value="Log out">
+            </form>
+            
+            <form method="post" action="{% url 'dashboard:certificate_submission' %}">
+                {% csrf_token %}
+                <input type="submit" style="color: #FFFFFF; background-color:#F6A667;" value="Certificate">
+            </form>
+
+        </div>
+        
+        <script>
+            function submitForm() {
+                document.getElementById("file_submit_form").submit();
+            }
+        </script>
+    {% endwith %}
 </body>
+
 </html>

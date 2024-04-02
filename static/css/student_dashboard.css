@@ -110,7 +110,7 @@ tr:hover {
 .progress-bar {
   height: 20px;
   background-color: #ddd;
-  border-radius: 20px; /* Optional rounded corners */
+  border-radius: 25px; /* Optional rounded corners */
   position: relative; /* Needed for progress label positioning */
 }
 .progress-container{
@@ -118,54 +118,41 @@ tr:hover {
 }
 
 
-/* indivAttInfo */
-.specific_att_info{
-  width: 100vw;
-}
-.spec_att_header{
+/* Specific attendance info */
+
+.specific_attendance_info{
+  width:90vw;
+  margin:3vw;
+  margin-bottom: 10vh;
   display: flex;
-  flex-direction: row;
-  align-items: center;
 }
-.spec_info_table_wrapper{
-  min-height: 50vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 5vh;
-  flex-grow: 1;
-}
-.spec_course_info{
-  margin-left: 5vw;
-  margin-right: 5vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.spec_course_info h1{
-  font-size: 3.3vh;
-  text-align: left;
+.goBack{
   font-family: gilroy-600;
   color: #F6A667;
-
+  border-radius: 15px;
+  margin:2%;
+  cursor: pointer;
 }
-.spec_course_info h2{
-  font-size: 2.3vh;
+.teacher-info{
+  margin-bottom: 5vh;
+}
+.teacher-info h3{
+  color: #F6A667;
   font-family: gilroy-600;
-  text-align: left;
-
+  font-size: 1.6rem;
+}
+.teacher-info p{
+  color: white;
+  font-family: gilroy-600;
+  font-size: 1.4rem;
 }
 
-#dropdown ,option{
-  border-radius: 20px;
-  border: none ; 
-  height: 6vh;
-  width: 14.3vw;
-  font-size: 2.3vh;
-  font-family: gilroy-600;
-  background-color: #162350;
-  color: #FFFFFF;
+.lecture, .practice{
+  width: 50%;
+  
+}
+.attendance-table{
+  width: 80%;
 }
 
 
