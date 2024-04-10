@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import Schedule, Course, Classroom, Attendance, Reason, AttendanceStatistics
+from .models import teachers_courses, course, students_courses, attendance, specific_course
 
-admin.site.register(Schedule)
-admin.site.register(Course)
-admin.site.register(Classroom)
-admin.site.register(Attendance)
-admin.site.register(Reason)
-admin.site.register(AttendanceStatistics)
+admin.site.register(teachers_courses)
+admin.site.register(course)
+admin.site.register(students_courses)
+admin.site.register(attendance)
+admin.site.register(specific_course)

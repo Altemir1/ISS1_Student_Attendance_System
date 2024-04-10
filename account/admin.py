@@ -15,6 +15,6 @@ admin.site.register(Teacher, CustomTeacherAdmin)
 class CustomStudentAdmin(UserAdmin):
     add_form = StudentCreationForm
     model = Student
-    list_display = ('student_id', 'username', 'fullName', 'email', 'advisor', 'major_program')
+    list_display = ('id', 'email', 'advisor', 'major_program')
 
 admin.site.register(Student, CustomStudentAdmin)

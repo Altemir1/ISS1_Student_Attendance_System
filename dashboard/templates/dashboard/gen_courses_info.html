@@ -10,8 +10,8 @@
         </thead>
         <tbody>
             {% for course in teacher_courses %}
-                    <tr onclick="window.location.href='{% url 'dashboard:choosing_current_course'  %}'"> 
-                    <td><a href="{% url 'dashboard:course_dashboard' course_id=course.course_id teacher_id=teacher.id %}" class="course-link">{{ course.course_code }}</a></td>
+                    <tr onclick="window.location.href='{% url 'dashboard:specific_course'  %}'"> 
+                    <td><a href="{% url 'dashboard:course_dashboard' course_code=course.course_code id=teacher.id %}" class="course-link">{{ course.course_code }}</a></td>
                     <td>{{ course.course_name }}</td>    
                     </tr>
             {% endfor %}

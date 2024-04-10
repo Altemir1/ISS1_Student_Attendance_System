@@ -1,6 +1,5 @@
 {% extends "dashboard/student_dashboard.html" %}
 {% block content %}
-{% load progress_bar %}
 <div class="gen_attendance_info">
         
     <table>
@@ -19,28 +18,30 @@
         </thead>
         <tbody>
             {% for course in student_courses %}
-            <tr onclick="window.location.href='{% url 'dashboard:specific_course' course_id=course.course_id student_id=student.id %}'">
+            <tr onclick="window.location.href='{% url 'dashboard:specific_course' course_code=course.course_code id=student.id %}'">
                 <td>{{ course.course_code }}</td>
                 <td>{{ course.course_name }}</td>
                 <td>{{ course.credits }}</td>
-                <td>{{ course.ects }}</td>
-                <td>{{ course.attendance_stats.total_hours }}</td>
+                <td>{{ course.ECTS }}</td>
+                <td>{{ course.hours }}</td>
                 <td>
                     <!-- Display the number of present classes here -->
-                    {{ course.attendance_stats.present_hours }}
+                    {{ course.present }}
                 </td>
             
                 <td>
                     <!-- Display the number of absent classes here -->
-                    {{ course.attendance_stats.absent_hours }}
+                    {{ course.absent }}
                 </td>
                 <td>
-                    {{ course.attendance_stats.p_hours }}
+                    {{ course.P }}
                 </td>
                 <td>
                     <div class="progress-container" style="display:flex; justify-content:space-between; align-items:center;">
-                        <div style="width:80%;background-color: #F6A667; border: 1px solid black;margin:3%;border-radius:20px;"><div class="progress-bar" id="progressBar" style="width:{{ course.attendance_stats|calculate_progress }}%; background-color:red;" ></div></div>
-                        {{ course.attendance_stats|calculate_progress }}%
+                        <div style="width:80%;background-color: #F6A667; border: 1px solid black;margin:3%;border-radius:20px;">
+                            <div class="progress-bar" id="progressBar" style="width:{{ course.absens_persentage }}%; background-color:red;" ></div>
+                        </div>
+                        {{ course.absens_persentage }}%
                     </div>
                 </td>
             </tr>
