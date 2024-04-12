@@ -3,4 +3,5 @@ from . import views
 
 app_name = 'attendance'
 urlpatterns = [
+    
 ]

@@ -17,6 +17,7 @@ def user_login(request):
             print(id , password)
             
             user = authenticate(request, id=id, password=password, role=role)
+            
             if user is not None:
                 login(request, user)
                 return redirect('dashboard:dashboard')  

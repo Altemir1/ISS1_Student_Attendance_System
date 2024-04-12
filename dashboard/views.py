@@ -8,39 +8,40 @@ def dashboard(request):
     if request.user.is_student:
         
         course_codes = []
-        course_info = [] # it will contain array [p, present, absent]   
+        course_info = [] # it will contain array [p, present, absent]
+        
         gen_courses_info = []
         
         #Geting into students_courses table 
         specific_course_ids_of_a_student = students_courses.objects.filter(student_id=request.user.student.id).values_list('specific_course_id', flat=True)
         
         for id_specific_course in specific_course_ids_of_a_student:
+            
             # inside students_courses table and getting into specific courses table  
-            courses_of_student = specific_course.objects.filter(specific_course_id=id_specific_course)
+            course_of_student = specific_course.objects.filter(specific_course_id=id_specific_course).first()
             
             # checking each specific course for attendance
-            for c in courses_of_student:
-                if c.course_code in course_codes:
-                    for i, existing in enumerate(course_codes):
-                        if existing == c.course_code:
-                            
-                            present=len(attendance.objects.filter(student_id=request.user.student.id, specific_course_id=id_specific_course,status=1))
-                            P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
-                            absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
-                            
-                            course_info[i][0]=course_info[i][0]+P
-                            course_info[i][1]=course_info[i][1]+present
-                            course_info[i][2]=course_info[i][2]+absent
-                            break
-                else:
-                    course_codes.append(c.course_code)
-                    
-                    present=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=1))
-                    P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
-                    absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
-                    
-                    course_info.append([P,present,absent])
-        
+            if course_of_student.course_code in course_codes:
+                for i, existing in enumerate(course_codes):
+                    if existing == course_of_student.course_code:
+                        
+                        present=len(attendance.objects.filter(student_id=request.user.student.id, specific_course_id=id_specific_course,status=1))
+                        P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
+                        absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
+                        
+                        course_info[i][0]=course_info[i][0]+P
+                        course_info[i][1]=course_info[i][1]+present
+                        course_info[i][2]=course_info[i][2]+absent
+                        break
+            else:
+                course_codes.append(course_of_student.course_code)
+                
+                present=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=1))
+                P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
+                absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
+                
+                course_info.append([P,present,absent])
+    
         for i, code in enumerate(course_codes):
             course_obj = course.objects.filter(course_code=code).first()
             gen_courses_info.append({
@@ -86,7 +87,6 @@ def specific_course_t(request, course_id, teacher_id):
         return render(request, 'dashboard/course_dashboard.html', {'course': course, 'schedules': schedules})
     else:
         return redirect('account:login')
-
 '''
 @login_required
 def specific_course(request, course_code, id):
@@ -97,7 +97,7 @@ def specific_course(request, course_code, id):
         
         return render(request, 'dashboard/specific_course_attendance.html', {'course': course, 'schedules': schedules, 'attendances': attendances})
     elif request.user.is_teacher:
-        
+        pass
     else:
         return redirect('account:login')
 
