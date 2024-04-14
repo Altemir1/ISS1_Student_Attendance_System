@@ -1,14 +1,12 @@
-{% extends "dashboard/student_dashboard.html" %}
+{% extends "dashboard/student_base.html" %}
 {% block content %}
-<div class="specific_attendance_info">
+<div class="specific_course">
     <div class="lecture">
         
         <div class="teacher-info">
             <h3>{{ course.course_code}} - {{ course.course_name }}</h3>
             <p>{{course.groupe.lecture}}-N {{course.lecturer}}, {{course.lecturer_status}}</p>
         </div>
-        
-        <button class="goBack" onclick="history.back();">Go back</button>
         
         <table class="attendance-table" >
             <thead>

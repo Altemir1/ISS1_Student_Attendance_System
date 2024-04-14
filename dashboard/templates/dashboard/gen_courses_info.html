@@ -6,13 +6,15 @@
             <tr class="header-row">
                 <th>Code</th>
                 <th>Course name</th>
+                <th>Type</th>
             </tr>
         </thead>
         <tbody>
             {% for course in teacher_courses %}
-                    <tr onclick="window.location.href='{% url 'dashboard:specific_course'  %}'"> 
-                    <td><a href="{% url 'dashboard:course_dashboard' course_code=course.course_code id=teacher.id %}" class="course-link">{{ course.course_code }}</a></td>
-                    <td>{{ course.course_name }}</td>    
+                    <tr onclick="window.location.href='{% url 'dashboard:teacher_course_displayer' course_code=course.course_code course_type=course.course_type  %}'"> 
+                    <td>{{ course.course_code }}</td>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ course.course_type }}</td>    
                     </tr>
             {% endfor %}
         </tbody>

@@ -1,0 +1,51 @@
+{% extends "dashboard/student_base.html" %}
+{% block content %}
+<div class="courses_container">
+
+    <div class="section_info">
+      <h2>ELECTRONIC  ATTENDANCE</h2>        
+    </div>       
+
+
+    <section class="attendance_container">
+       <table class="attendance_table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Course name</th>
+                    <th>Credits</th>
+                    <th>ECTS</th>
+                    <th>Hours</th>
+                    <th>✅</th>
+                    <th>❌</th>
+                    <th>P</th>
+                    <th>Absence %</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in student_courses %}
+                    <tr onclick="window.location.href='{% url 'dashboard:student_courses_specific_one' course_code=course.course_code %}'" >
+                        <td>{{ course.course_code }}</td>
+                        <td>{{ course.course_name }}</td>
+                        <td>{{ course.credits }}</td>
+                        <td>{{ course.ECTS }}</td>
+                        <td>{{ course.hours }}</td>
+                        <td>{{ course.present }}</td>
+                        <td>{{ course.absent }}</td>
+                        <td>{{ course.P }}</td>
+                        <td>
+                            <div class="progress-container" style="display:flex; justify-content:space-between; align-items:center;">
+                                <div style="width:80%;background-color: #F6A667; border: 1px solid black;margin:3%;border-radius:20px;">
+                                    <div class="progress-bar" id="progressBar" style="width:{{ course.absens_persentage }}%; background-color:red;" ></div>
+                                </div>
+                                {{ course.absens_persentage }}%
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+</div>
+{% endblock content %}

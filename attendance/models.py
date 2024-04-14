@@ -27,6 +27,7 @@ class attendance(models.Model):
 
 class specific_course(models.Model):
     course_code = models.CharField(max_length=7,blank=False)
+    is_lecture=models.BooleanField(default=True,blank=False)
     specific_course_id = models.IntegerField(blank=False,default=0,unique=True)
     group = models.IntegerField(blank=False,default=0)
     course_part = models.IntegerField(blank=False,default=0)

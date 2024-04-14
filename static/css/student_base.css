@@ -1,0 +1,174 @@
+body,html {
+    font-family: gilroy-600;
+    background-color: #263B83;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+}
+.navigator img {
+    width: 15vw; 
+}
+.navigator {
+    background-color: white;
+    color: black;
+    width: 15vw;
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+}
+.navigator ol {
+    list-style: none;
+    padding: 0;
+}
+.navigator ol li p {
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    display: flex;              /* Use flexbox */
+    justify-content: center;    /* Center horizontally */
+    align-items: center;        /* Center vertically */
+    height: 5vh;
+    font-size: 2.5vh;
+    font-family: gilroy-600;
+}
+.navigator ol li.active p,
+.navigator  ol li p:hover{
+background-color: #F6A667;
+}
+.logout_button:hover {
+    background-color: #eb3f3f;
+}
+.logout_button{
+    font-family: gilroy-600;
+    color: black;
+    border: none;
+    width: 15vw;
+    cursor: pointer;
+    margin-top: 20vh;
+    font-size: 2vh;
+    height: 5vh;
+}
+/* PROFILE */
+.profile_container{
+    height: 100vh;
+    width: 85vw;
+}
+.section_info{
+    height: 30vh;
+    margin-left: 10vw;
+    width: 75vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.section_info h2{
+color:white;
+font-weight: lighter;
+font-family: gilroy-600;
+}
+.student_info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.info{
+background-color: white;
+border-radius: 15px;
+padding: 60px;
+width:35vw;
+height: 35vh;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+display: flex;
+flex-direction: row;
+}
+.text_info{
+    /* border: 1px solid red; */
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
+.prof_image_container{
+    width: 40%;
+}
+.info p {
+margin: 10px 0;
+font-size: 16px;
+margin-bottom: 20px;
+white-space: nowrap;
+font-family: gilroy-600; 
+}
+.info p span{
+    color:#be6a2a;
+}
+/* COURSES */
+.courses_container{
+    height: 100vh;
+    width: 85vw;
+}
+.section_info{
+    height: 30vh;
+    margin-left: 10vw;
+    width: 75vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.attendance_container {
+    max-width: 55vw;
+    display: flex;
+    align-items: left;
+    margin-left: 10vw;
+}
+
+.attendance_table {
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    width: 100%; 
+    margin: 0 auto; 
+    border-collapse: collapse; 
+    text-align: center; 
+    color: #F6A667; 
+    flex-grow: 1;
+}
+
+
+.attendance_table th, .attendance_table td {
+padding: 9px;
+}
+
+.attendance_table th {
+    background:#F6A667;
+    color: #000000;
+    border-bottom: 1px solid black;
+}
+.attendance_table td{
+    color:black;
+}
+.attendance_table tr:hover{
+    background-color: #263c83be;
+    transition: 0.5s;
+}
+th:first-child {
+    border-top-left-radius: 10px;
+    width: 5vw;
+}
+th:last-child {
+    border-top-right-radius: 10px;
+}
+/* SPECIFIC COURSE */
+.specific_course{
+    height: 100vh;
+    width: 85vw;
+    display: flex;
+    flex-grow: 1;
+}
+.lecture{
+    width: 85vw;
+}

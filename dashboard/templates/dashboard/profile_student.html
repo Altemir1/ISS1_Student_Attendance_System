@@ -1,0 +1,25 @@
+{% extends "dashboard/student_base.html" %}
+{% block content %}
+<div class="profile_container">
+    {% with student=request.user.student %}
+    <div class = "section_info">
+        <h2>STUDENT INFORMATION</h2>
+    </div>
+    <div class="student_info">
+            <div class="info">
+                <div class="text_info">
+                    <p>STUDENT:&nbsp;<span>{{ student.first_name}} {{ student.last_name}}</span></p>
+                    <p>ID:&nbsp;<span>{{ student.id }}</span></p>
+                    <p>DEPARTMENT:&nbsp;<span>{{ student.major_program }}</span></p>
+                    <p>EMAIL:&nbsp;<span>{{ student.id }}@stu.sdu.edu.kz</span></p>
+                    <p>ADVISOR:&nbsp;<span>{{ student.advisor }}</span></p>
+                </div>
+                <div class="prof_image_container">
+                    {% comment %} Image {% endcomment %}
+                </div>
+            </div>
+            {% comment %} <img src="IMG_2478.png" alt="Student Photo" class="student-photo"> {% endcomment %}
+    </div>
+    {% endwith %}
+</div>
+{% endblock content %}

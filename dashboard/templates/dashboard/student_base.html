@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <link rel="stylesheet" href="{% static 'css/student_base.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/image.png' %}">
+    <script src="{% static 'js/student_base.js' %}"></script>
+    <style>
+        @font-face {
+        font-family: 'gilroy-600';
+        src: url('{% static "fonts/Gilroy_Qaz/Gilroy-Semibold 2.ttf" %}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        }
+        @font-face {
+            font-family: 'sduBold';
+            src: url('{% static "fonts/sdu.otf" %}') format('opentype');
+        }
+    </style>
+</head>
+
+<body>
+    {% with student=request.user.student %}
+        <div class="navigator">
+            <img src="{% static 'img/image.png' %}" alt="Happy University Logo">
+            <ol >
+                <li id="PROFILE" class="{{status1}}" onclick="window.location.href='{% url 'dashboard:student_profile' %}';"><p>PROFILE</p></li>
+                <li id="COURSES" class="{{status2}}" onclick="window.location.href='{% url 'dashboard:student_courses' %}';"><p >COURSES</p></li>
+                <li id="CERTIFICATES" class="{{status3}}" onclick="window.location.href='{% url 'dashboard:student_document_submission' %}';"><p >CERTIFICATES</p></li>
+            </ol>
+            <form method="post" action="{% url 'account:logout' %}">
+                {% csrf_token %}
+                <input type="submit" class="logout_button" value="LOG OUT">
+            </form>
+        </div>
+        {% block content%}{% endblock content %}
+    {% endwith %}
+</body>
