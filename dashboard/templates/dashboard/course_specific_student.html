@@ -3,12 +3,12 @@
 <div class="specific_course">
     <div class="lecture">
         
-        <div class="teacher-info">
+        <div class="teacher_info">
             <h3>{{ course.course_code}} - {{ course.course_name }}</h3>
             <p>{{course.groupe.lecture}}-N {{course.lecturer}}, {{course.lecturer_status}}</p>
         </div>
         
-        <table class="attendance-table" >
+        <table class="attendance_table" >
             <thead>
                 <tr>
                     <th></th>
@@ -35,12 +35,12 @@
     {% if practice_attendances %}
     <div class="practice">
         
-        <div class="teacher-info">
+        <div class="teacher_info">
             <h3>{{ course.course_code}} - {{ course.course_name }}</h3>
             <p>{{course.groupe.practice}}-P {{course.practice_teacher}}, {{course.practice_teacher_status}}</p>
         </div>    
 
-        <table class="attendance-table" style="margin-top:8%;">
+        <table class="attendance_table">
             <thead>
                 <tr>
                     <th></th>

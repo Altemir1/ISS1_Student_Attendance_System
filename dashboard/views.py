@@ -94,7 +94,7 @@ def student_courses_specific_one(request,  course_code=None):
     for att in attendances:
         start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
         lecture_attendances.append({
-            "week":att.weak_count,
+            "week":str(att.weak_count)+"W",
             "status":att.status,
             "start_time":start_time
         })
@@ -114,7 +114,7 @@ def student_courses_specific_one(request,  course_code=None):
         for att in attendances:
             start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
             practice_attendances.append({
-                "week":att.weak_count,
+                "week":str(att.weak_count)+"W",
                 "status":att.status,
                 "start_time":start_time
             })
