@@ -215,3 +215,60 @@ th:last-child {
 .att_status_container:hover{
     background-color: #ff2a2abe;
 }
+
+
+
+
+.form_container{
+    margin-left: 10vw;
+    width: 65vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.form-group label {
+    width: 25%; /* Allocate some width to labels for proper alignment */
+    text-align: right; /* Right-align labels for better presentation within the form */
+    color: #be6a2a;
+}
+.file_submission_form{
+    width: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    padding-bottom: 2vh;
+}
+.form-group{
+    width: 30vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    margin: 2.5vh;
+}
+.form-control {
+    width: 20vw;
+    resize: vertical;
+    border-radius: 10px;
+    border: 2px solid black ;
+}
+.submit_document_button{
+    font-family: gilroy-600;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    width: 15vw;
+    margin-top: 1vh;
+    cursor: pointer;
+    font-size: 2vh;
+    height: 5vh;
+    background-color: #be6a2a;
+}
+.submit_document_button:hover{
+    background-color: #eb3f3f;
+}

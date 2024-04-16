@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from attendance.models import course, attendance, specific_course, teachers_courses, students_courses
 from account.models import Teacher, Student
+from .forms import DocumentSubmissionForm
 import math
 
 #STUDENT
@@ -120,9 +121,28 @@ def student_courses_specific_one(request,  course_code=None):
                 "start_time":start_time
             })
         return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'practice_attendances':practice_attendances,'status1':"",'status2':"active",'status3':""})
+
 @login_required
 def student_document_submission(request):
-    return
+    context = {'status1':"",'status2':"",'status3':"active"}
+    if request.method == 'POST':
+        form = DocumentSubmissionForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Handle the uploaded document (save, process, etc.)
+            #form.save()  # Placeholder for handling the document
+            
+            context['success']= 'Your document has been received!'
+            context['form']=form
+            
+            return render(request, 'dashboard/document_submission_student.html',context)  # Redirect to success page after handling
+        else:
+            context['error']="Your document submission process had some issues Note: ONLY .pdf files please  !"
+            context['form']=form
+            
+    else:
+        context['form'] = DocumentSubmissionForm()
+    return render(request, 'dashboard/document_submission_student.html', context)
+
 #TEACHER 
 @login_required
 def teacher_profile(request):
