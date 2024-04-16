@@ -24,6 +24,7 @@ class attendance(models.Model):
     specific_course_id = models.IntegerField(blank=False,default=0)
     status=models.IntegerField(blank=False,default=0) # 0 - is P and 1 - is attendant 2 - is absent
     weak_count = models.IntegerField(blank=False,default=0)
+    att_id = models.IntegerField(blank=False,unique=True,default=0)
 
 class specific_course(models.Model):
     course_code = models.CharField(max_length=7,blank=False)

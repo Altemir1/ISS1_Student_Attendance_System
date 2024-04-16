@@ -29,16 +29,22 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ student.name  }}</td>
                         {% for attendance in student.attendances %}
-                            {% for hourly_status in attendance %}
-                                <td>
-                                    {% if hourly_status == 1 %}
-                                    ✅
-                                    {% elif hourly_status == 2 %}
-                                    ❌
+                            {% for hourly in attendance %}
+
+                                <td class="att_status_container" onclick="toggleStatus({{ hourly.attendance }});">
+                                    <form action="{% url 'attendance:att_toggle' att_id=hourly.attendance course_code=course_code group=group course_type=course_type %}" method="post" id="toggle-form-{{ hourly.attendance }}" style="display: none;">
+                                        {% csrf_token %}
+                                        <input type="text" name="status" id="status-input" readonly>
+                                    </form>
+                                    {% if hourly.status == 1 %}
+                                        ✅
+                                    {% elif hourly.status == 2 %}
+                                        ❌
                                     {% else %}
-                                     P 
+                                        P 
                                      {% endif %}
                                 </td>
+
                             {% endfor %}
                         {% endfor %}    
                     </tr >
@@ -47,4 +53,11 @@
         </table>
     <section>
 </div>
+<script>
+    function toggleStatus(counter) {
+        console.log(counter)
+        const form = document.getElementById(`toggle-form-${counter}`);
+        form.submit();
+    }
+</script>
 {% endblock content %}

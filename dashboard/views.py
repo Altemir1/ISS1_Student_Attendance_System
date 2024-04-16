@@ -162,6 +162,7 @@ def teacher_courses_specific_one(request,course_code,course_type):
     teachers_course_objects = specific_course.objects.filter(specific_course_id__in = teachers_,course_code=course_code,is_lecture=is_lecture, course_part=1 )
     
     return render(request, 'dashboard/course_specific_teacher.html', {'course_code':course_code,'course_type':course_type,'course_name':course_name,'teacher_courses': teachers_course_objects,'status1':"",'status2':"active"})
+
 @login_required
 def teacher_courses_specific_one_attendance(request, course_code, group, course_type):
     is_lecture = False
@@ -188,16 +189,18 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
                 for att in attendances_of_student:
                     if i==0:
                         hours.append([crs.course_start_time])
-                    students[i]["attendances"].append([att.status])
+                    students[i]["attendances"].append([{"status":att.status,"attendance":att.att_id}])
             #IF THE LIST IS NOT EMPTY I GOTTA ADD UP THE VALUES WHICH WERE GOTTEN LATER
             else:
                 attendances_of_student = attendance.objects.filter(specific_course_id=crs.specific_course_id,student_id=student.id).order_by('weak_count')
                 for k, att in enumerate(attendances_of_student):
                     if i==0:
                         hours[k].append(crs.course_start_time)
-                    students[i]["attendances"][k].append(att.status)
-    print(students[0]["attendances"])
-    print(hours)
+                    students[i]["attendances"][k].append({"status":att.status,"attendance":att.att_id})
+    
+    #print(students[0]["attendances"])
+    #print(hours)
+    
     return render(request,'dashboard/course_specific_teacher_attendance.html',{'course_code':course_code,'group':group, 'course_name':course_name, 'course_type':course_type, 'students':students, 'weeks':hours,'status1':"",'status2':"active"})
 
 # #Gotta fix this 
