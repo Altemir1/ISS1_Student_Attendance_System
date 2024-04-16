@@ -1,9 +1,12 @@
 {% extends "dashboard/student_base.html" %}
 {% block content %}
-<div class="courses_container">
+<div class="courses_container"  >
 
-    <div class="section_info">
-      <h2>ELECTRONIC  ATTENDANCE</h2>        
+    <div class="section_info"> 
+        <div >
+            <h3 onclick="window.location.href='{% url 'dashboard:student_courses'%}'" >> COURSES</h3>  
+        </div> 
+        <h2>ELECTRONIC  ATTENDANCE</h2>        
     </div>       
 
 

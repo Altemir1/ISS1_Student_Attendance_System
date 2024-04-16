@@ -11,5 +11,8 @@ urlpatterns = [
     path('student_courses_specific_one/<str:course_code>/', views.student_courses_specific_one, name='student_courses_specific_one'),
     path('student_document_submission/',views.student_document_submission, name='student_document_submission'),
     #TEACHER
-    path('specific_course/<str:course_code>/<str:course_type>/', views.teacher_course_displayer, name='teacher_course_displayer'),
+    path('teacher_profile/', views.teacher_profile, name='teacher_profile'),
+    path('teacher_courses/', views.teacher_courses, name="teacher_courses"),
+    path('teacher_courses_specific_one/<str:course_code>/<str:course_type>/', views.teacher_courses_specific_one, name='teacher_courses_specific_one'),
+    path('teacher_courses_specific_one_attendance/<str:course_code>/<str:group>/<str:course_type>/', views.teacher_courses_specific_one_attendance, name='teacher_courses_specific_one_attendance'),
 ]

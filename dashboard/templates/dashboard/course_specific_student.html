@@ -1,6 +1,10 @@
 {% extends "dashboard/student_base.html" %}
 {% block content %}
 <div class="specific_course">
+    <div class="hirarchi">
+        <h3 onclick="window.location.href='{% url 'dashboard:student_courses'%}'" >&nbsp;> COURSES</h3><h3 onclick="window.location.href='{% url 'dashboard:student_courses_specific_one' course_code=course.course_code %}'" >&nbsp;> {{ course.course_code}} - {{ course.course_name }}</h3>  
+    </div>
+
     <div class="lecture">
         
         <div class="teacher_info">

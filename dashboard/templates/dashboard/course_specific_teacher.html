@@ -1,0 +1,32 @@
+{% extends "dashboard/teacher_base.html" %}
+{% block content %}
+<div class="gen_courses_info">
+
+    <div class="section_info"> 
+        <div style="display:flex;flex-direction:row;">
+            <h3 onclick="window.location.href='{% url 'dashboard:teacher_courses'%}'" >&nbsp;> COURSES</h3><h3 onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one' course_code=course_code course_type=course_type %}'" >&nbsp;&nbsp;> {{course_code}} - {{ course_name }} </h3>  
+        </div> 
+        <h2>COURSES</h2>        
+    </div> 
+    <section class="attendance_container">
+        <table class="attendance_table">
+            <thead>
+                <tr class="header-row">
+                    <th>Code</th>
+                    <th>Group</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in teacher_courses %}
+                        <tr onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one_attendance' course_code=course.course_code  group=course.group course_type=course_type %}'"> 
+                        <td>{{ course.course_code }}</td>
+                        <td>{{ course.group }}</td>
+                        <td>{{ course_type }}</td>    
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <section>
+</div>
+{% endblock content %}

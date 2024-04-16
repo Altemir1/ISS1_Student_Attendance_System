@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from attendance.models import course, attendance, specific_course, teachers_courses, students_courses
-from account.models import Teacher
+from account.models import Teacher, Student
 import math
 
+#STUDENT
 @login_required
 def student_profile(request):
     return render(request, 'dashboard/profile_student.html',{'status1':"active",'status2':"",'status3':""})
@@ -100,7 +101,7 @@ def student_courses_specific_one(request,  course_code=None):
         })
     
     if len(course_code_matched_ids_p)==0:
-        return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,})
+        return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'status1':"",'status2':"active",'status3':""})
     else :
         practice_attendances = []
         attendances = attendance.objects.filter(student_id=request.user.student.id,specific_course_id__in=course_code_matched_ids_p)
@@ -118,8 +119,14 @@ def student_courses_specific_one(request,  course_code=None):
                 "status":att.status,
                 "start_time":start_time
             })
-        return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'practice_attendances':practice_attendances,})
-
+        return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'practice_attendances':practice_attendances,'status1':"",'status2':"active",'status3':""})
+@login_required
+def student_document_submission(request):
+    return
+#TEACHER 
+@login_required
+def teacher_profile(request):
+    return render(request, 'dashboard/profile_teacher.html',{'status1':"active",'status2':""})
 
 @login_required
 def teacher_courses(request):
@@ -142,14 +149,57 @@ def teacher_courses(request):
                 "course_type":type_of_course,
             })
     
-    return render(request, 'dashboard/gen_courses_info.html', {'teacher_courses': teacher_courses})
+    return render(request, 'dashboard/courses_teacher.html', {'teacher_courses': teacher_courses,'status1':"",'status2':"active"})
 
 @login_required
-def teacher_course_displayer(request, course_code=None, course_type=None):
-    return render(request, 'dashboard/choosing_current_cource.html', {'course': None})
+def teacher_courses_specific_one(request,course_code,course_type):
+    is_lecture = False
+    if course_type=="L":
+        is_lecture = True
+    course_name = course.objects.filter(course_code=course_code).first().course_name
+    
+    teachers_ = teachers_courses.objects.filter(teacher_id=request.user.teacher.id).values_list('specific_course_id', flat=True)
+    teachers_course_objects = specific_course.objects.filter(specific_course_id__in = teachers_,course_code=course_code,is_lecture=is_lecture, course_part=1 )
+    
+    return render(request, 'dashboard/course_specific_teacher.html', {'course_code':course_code,'course_type':course_type,'course_name':course_name,'teacher_courses': teachers_course_objects,'status1':"",'status2':"active"})
+@login_required
+def teacher_courses_specific_one_attendance(request, course_code, group, course_type):
+    is_lecture = False
+    if course_type=="L":
+        is_lecture = True
+    
+    course_name = course.objects.filter(course_code=course_code).first().course_name
+    
+    students=[]
+    hours=[]
+    course_info = specific_course.objects.filter(course_code=course_code,is_lecture=is_lecture,group=group).order_by('course_part')
+    
+    for j,crs in enumerate(course_info):
+        student_ids = students_courses.objects.filter(specific_course_id=crs.specific_course_id).values_list('student_id', flat=True)
+        for i, id in enumerate(student_ids):
+            student =  Student.objects.filter(id=id).first()
+            #ADD A STUDENT IF THE LIST IS EMPTY
+            if len(students)<=i:
+                students.append({
+                    "name":student.first_name+" "+student.last_name,
+                    "attendances":[]
+                })
+                attendances_of_student = attendance.objects.filter(specific_course_id=crs.specific_course_id,student_id=student.id).order_by('weak_count')
+                for att in attendances_of_student:
+                    if i==0:
+                        hours.append([crs.course_start_time])
+                    students[i]["attendances"].append([att.status])
+            #IF THE LIST IS NOT EMPTY I GOTTA ADD UP THE VALUES WHICH WERE GOTTEN LATER
+            else:
+                attendances_of_student = attendance.objects.filter(specific_course_id=crs.specific_course_id,student_id=student.id).order_by('weak_count')
+                for k, att in enumerate(attendances_of_student):
+                    if i==0:
+                        hours[k].append(crs.course_start_time)
+                    students[i]["attendances"][k].append(att.status)
+    print(students[0]["attendances"])
+    print(hours)
+    return render(request,'dashboard/course_specific_teacher_attendance.html',{'course_code':course_code,'group':group, 'course_name':course_name, 'course_type':course_type, 'students':students, 'weeks':hours,'status1':"",'status2':"active"})
 
-def student_document_submission(request):
-    return
 # #Gotta fix this 
 # @login_required
 # def student_document_submission(request):

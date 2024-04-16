@@ -20,7 +20,10 @@ def user_login(request):
             
             if user is not None:
                 login(request, user)
-                return redirect('dashboard:student_profile')  
+                if user.is_student:
+                    return redirect('dashboard:student_profile')
+                else:
+                    return redirect('dashboard:teacher_profile')  
             else:
                 messages.error(request, 'Invalid credentials. Please try again and check your role.')
                 return redirect('account:login')

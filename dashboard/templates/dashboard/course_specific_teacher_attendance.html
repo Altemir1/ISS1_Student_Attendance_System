@@ -1,0 +1,50 @@
+{% extends "dashboard/teacher_base.html" %}
+{% block content %}
+<div class="gen_courses_attendance_info">
+
+    <div class="section_info"> 
+        <div style="display:flex;flex-direction:row;">
+            <h3 onclick="window.location.href='{% url 'dashboard:teacher_courses'%}'" >&nbsp;> COURSES</h3>
+            <h3 onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one' course_code=course_code course_type=course_type %}'" >&nbsp;&nbsp;> {{course_code}} - {{ course_name }} </h3>  
+            <h3 onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one_attendance' course_code=course_code  group=group course_type=course_type %}'" >&nbsp;&nbsp;> Group - {{group}} </h3>  
+        </div> 
+        <h2>COURSES</h2>        
+    </div> 
+    <section class="attendance_container">
+        <table class="attendance_table">
+            <thead>
+                <tr class="header-row">
+                    <th>#</th>
+                    <th>Student name</th>
+                    {% for week in weeks %}
+                        {% for hour in week %}
+                            <th>W&nbsp;{{ forloop.parentloop.counter }}&nbsp;|&nbsp;{{ hour|time:"H:i" }}</th>
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr > 
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ student.name  }}</td>
+                        {% for attendance in student.attendances %}
+                            {% for hourly_status in attendance %}
+                                <td>
+                                    {% if hourly_status == 1 %}
+                                    ✅
+                                    {% elif hourly_status == 2 %}
+                                    ❌
+                                    {% else %}
+                                     P 
+                                     {% endif %}
+                                </td>
+                            {% endfor %}
+                        {% endfor %}    
+                    </tr >
+                {% endfor %}
+            </tbody>
+        </table>
+    <section>
+</div>
+{% endblock content %}

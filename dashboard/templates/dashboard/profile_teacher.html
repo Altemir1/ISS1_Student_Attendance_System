@@ -1,0 +1,24 @@
+{% extends "dashboard/teacher_base.html" %}
+{% block content %}
+<div class="profile_container">
+    {% with teacher=request.user.teacher %}
+    <div class = "section_info">
+        <h2>TEACHER INFORMATION</h2>
+    </div>
+    <div class="student_info">
+            <div class="info">
+                <div class="text_info">
+                    <p>TEACHER:&nbsp;<span>{{ teacher.first_name}} {{ teacher.last_name}}</span></p>
+                    <p>ID:&nbsp;<span>{{ teacher.id }}</span></p>
+                    <p>STATUS:&nbsp;<span>{{ teacher.status }}</span></p>
+                    <p>EMAIL:&nbsp;<span>{{ teacher.id }}@stu.sdu.edu.kz</span></p>
+                </div>
+                <div class="prof_image_container">
+                    {% comment %} Image {% endcomment %}
+                </div>
+            </div>
+            {% comment %} <img src="IMG_2478.png" alt="Student Photo" class="teacher-photo"> {% endcomment %}
+    </div>
+    {% endwith %}
+</div>
+{% endblock content %}

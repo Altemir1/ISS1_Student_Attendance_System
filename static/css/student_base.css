@@ -121,6 +121,11 @@ font-family: gilroy-600;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    color: #ffffff;
+}
+.section_info h3{
+    text-decoration: underline;
+    color:#F6A667;
 }
 .attendance_container {
     max-width: 55vw;
@@ -144,6 +149,8 @@ font-family: gilroy-600;
 
 .attendance_table th, .attendance_table td {
 padding: 9px;
+border-left: 1px solid black;
+border-right: 1px solid black;
 }
 
 .attendance_table th {
@@ -161,9 +168,11 @@ padding: 9px;
 th:first-child {
     border-top-left-radius: 10px;
     width: 5vw;
+    border: none;
 }
 th:last-child {
     border-top-right-radius: 10px;
+    border: none;
 }
 /* SPECIFIC COURSE */
 .specific_course{
@@ -172,6 +181,16 @@ th:last-child {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+    color: #ffffff;
+}
+.hirarchi{
+    margin-top: 4vh;
+    display:flex;
+    flex-direction:row;
+    height: 30vh;
+    margin-left: 10vw;
+    text-decoration: underline;
+    color:#F6A667;
 }
 .lecture{
     width: 85vw;
