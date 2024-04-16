@@ -1,5 +1,6 @@
 {% extends "dashboard/student_base.html" %}
 {% block content %}
+   
 <div class="courses_container"  >
 
     <div class="section_info"> 
@@ -37,9 +38,9 @@
                         <td>{{ course.absent }}</td>
                         <td>{{ course.P }}</td>
                         <td>
-                            <div class="progress-container" style="display:flex; justify-content:space-between; align-items:center;">
-                                <div style="width:80%;background-color: #F6A667; border: 1px solid black;margin:3%;border-radius:20px;">
-                                    <div class="progress-bar" id="progressBar" style="width:{{ course.absens_persentage }}%; background-color:red;" ></div>
+                            <div class="progress-container" style="width:100px; display:flex; justify-content:space-between; align-items:center;">
+                                <div style="width:80%;height:1vh;background-color: #F6A667; border: 1px solid black;border-radius:20px;">
+                                    <div class="progress-bar" id="progressBar" style="background-color:red; width:{{ course.absens_persentage }}%; height:1vh" ></div>
                                 </div>
                                 {{ course.absens_persentage }}%
                             </div>
@@ -49,6 +50,5 @@
             </tbody>
         </table>
     </section>
-
 </div>
 {% endblock content %}

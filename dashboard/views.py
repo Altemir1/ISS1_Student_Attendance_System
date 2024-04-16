@@ -53,7 +53,7 @@ def student_courses(request):
             "present": course_info[i][1],
             "absent": course_info[i][2],
             "P":course_info[i][0],
-            "absens_persentage": math.ceil(course_info[i][2]/course_obj.hours)
+            "absens_persentage": math.ceil((course_info[i][2]/course_obj.hours)*100)
         })
     
     return render(request, 'dashboard/courses_student.html', {'student_courses': gen_courses_info, 'status1':"",'status2':"active",'status3':""})
