@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from attendance.models import course, attendance, specific_course, teachers_courses, students_courses
 from account.models import Teacher, Student
 from .forms import DocumentSubmissionForm
+from django.core.files.storage import FileSystemStorage
 import math
 
 #STUDENT
@@ -128,8 +129,20 @@ def student_document_submission(request):
     if request.method == 'POST':
         form = DocumentSubmissionForm(request.POST, request.FILES)
         if form.is_valid():
-            # Handle the uploaded document (save, process, etc.)
-            #form.save()  # Placeholder for handling the document
+            
+            # Access the uploaded document
+            document = form.cleaned_data['document']
+
+            # Create a file storage instance
+            fs = FileSystemStorage()
+
+            # Save the uploaded file
+            filename = fs.save(document.name, document)
+
+            # I want to store it and store the description in a table for later checking and id of a student 
+            print(form.cleaned_data['description'])
+            uploaded_file_url = fs.url(filename)
+            
             
             context['success']= 'Your document has been received!'
             context['form']=form
