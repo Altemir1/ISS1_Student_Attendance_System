@@ -13,9 +13,7 @@ def user_login(request):
             id = form.cleaned_data['id']
             password = form.cleaned_data['password']
             role = request.POST['role']
-            
-            print(id , password)
-            
+
             user = authenticate(request, id=id, password=password, role=role)
             
             if user is not None:

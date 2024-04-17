@@ -1,82 +1,44 @@
-from django.test import TestCase
-from django.urls import reverse
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from .models import teachers_courses, course, students_courses, attendance, specific_course
-from account.models import Student, Teacher
-'''
-class StudentAttViewTests(TestCase):
-
+from django.urls import reverse
+from attendance.models import attendance, specific_course, course
+from attendance.views import att_toggle
+from account.models import  Teacher, Student
+from datetime import time
+class AttendanceViewsTest(TestCase):
     def setUp(self):
+        self.client = Client()
         self.student = Student.objects.create_user(
-            username='studentuser',
-            password='testpassword',
-            email='test2@example.com',
-            fullName='Test User',
-            student_id='2'
+            id='testid', password='testpassword', email='testemail@sdu.kz'
         )
-        
         self.teacher = Teacher.objects.create_user(
-            username='teacheruser',
-            password='teacherpassword',
-            email='test1@example.com',
-            fullName='Test User',
-            teacher_id='1'
+            id='testteach', password='testpassword'
         )
-        
-        self.course = Course.objects.create(
-            course_code='COMP101',
-            course_name='Introduction to Computer Science',
+        self.course = course.objects.create(
+            course_code='CS101',
             credits='3',
-            ects='6',
-            teacher=self.teacher
+            hours=45,
+            course_name='Introduction to Computer Science',
+            ECTS=5
         )
-        
-        # Create a classroom
-        self.classroom = Classroom.objects.create(
-            room_number='D114'
+        self.specific_course = specific_course.objects.create(
+            course_code='CS101',
+            is_lecture=True,
+            specific_course_id=1,
+            course_part=1,
+            course_start_time=time(8, 30, 0),
+            course_start_day=1
         )
-        
-        self.schedule = Schedule.objects.create(
-            student=self.student,
-            course=self.course,
-            teacher=self.teacher,
-            day_of_week='Monday',
-            start_time='08:00:00',
-            end_time='09:00:00',
-            classroom = self.classroom,
-            group = '01_N'
+        self.attendance = attendance.objects.create(
+            student_id='testid',
+            specific_course_id=1,
+            status=0,
+            weak_count = 1,
+            att_id = 1,
         )
-        # Create an attendance
-        self.attendance = Attendance.objects.create(
-            schedule=self.schedule,
-            student = self.student,
-            entry_time='2024-03-27 08:00:00',  
-            exit_time='2024-03-27 09:00:00',
-            date='2024-03-27 00:00:00',
-            present = True
-        )
-    def test_student_att_view(self):
+        self.client.post(reverse('account:login'), {'id': 'testteach', 'password': 'testpassword', 'role':'teacher'})
 
-        # Log in the student
-        self.client.login(username='studentuser', password='testpassword')
-
-        # Make a request to the student_att view with the necessary arguments
-        response = self.client.get(reverse('attendance:student_att', args=[self.course.course_id, self.student.id]))
-
-        # Check that the response is 200 OK
-        self.assertEqual(response.status_code, 200)
-
-        # Check that the course is displayed
-        self.assertContains(response, 'COMP101')
-
-        # Check that the schedule is displayed
-        # Check that the attendance is displayed
-        self.assertContains(response, '✅')
-        self.assertContains(response, self.student.fullName)
-        # Log out the student
-        self.client.logout()
-
-        # Check that the student is redirected to the login page
-        response = self.client.get(reverse('attendance:student_att', args=[self.course.course_id, self.student.id]))
+    def test_att_toggle(self):
+        response = self.client.get(reverse('attendance:att_toggle', args=('1', 'CS101', '1', 'L')))
         self.assertEqual(response.status_code, 302)
-'''
+        self.assertEqual(attendance.objects.get(att_id='1').status, 1)

@@ -1,169 +1,171 @@
-from django.test import RequestFactory
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from django.test import TestCase, Client
 from django.urls import reverse
-from django.test import TestCase
-from account.models import Student, Teacher
-from attendance.models import Course, AttendanceStatistics, Schedule, Classroom
+from attendance.models import attendance, specific_course, students_courses, course, teachers_courses
+from dashboard.views import student_profile
+from account.models import CustomUser, Student, Teacher
+from datetime import time
+from django.core.files.uploadedfile import SimpleUploadedFile
+from dashboard.forms import DocumentSubmissionForm
 
-class DashboardViewTests(TestCase):
-
+class StudentProfileTest(TestCase):
     def setUp(self):
-        # Create a user
-        self.teacher = Teacher.objects.create_user(
-            username='teacheruser',
-            password='teacherpassword',
-            email='test1@example.com',
-            fullName='Test User',
-            teacher_id='1'
-        )
-        self.student = Student.objects.create_user(
-            username='studentuser',
-            password='testpassword',
-            email='test2@example.com',
-            fullName='Test User',
-            student_id='2'
-        )
+        self.client = Client()
+        self.user = Student.objects.create_user(
+            id='testuser', password='testpassword')
+        self.client.login(username=self.user.id, password='testpassword')
 
-        # Create a course
-        self.course = Course.objects.create(
-            course_code='COMP101',
-            course_name='Introduction to Computer Science',
-            credits='3',
-            ects='6',
-            teacher=self.teacher
-        )
-        
-        self.classroom = Classroom.objects.create(
-            room_number='D114'
-        )
-        # Create a schedule
-        self.schedule = Schedule.objects.create(
-            student=self.student,
-            course=self.course,
-            teacher=self.teacher,
-            day_of_week='Monday',
-            start_time='08:00:00',
-            end_time='09:00:00',
-            classroom = self.classroom,
-            group = '01_N'
-        )
-
-        # Create attendance statistics for the course
-        self.at = AttendanceStatistics.objects.create(
-            student=self.student,
-            course=self.course,
-            total_hours=50,
-            present_hours=40,
-            absent_hours=10,
-            p_hours=2
-        )
-    def test_dashboard_view_by_student(self):
-        # Log in the user
-        self.client.login(username='studentuser', password='testpassword')
-
-        # Get the dashboard view
-        response = self.client.get(reverse('dashboard:dashboard'))
-
-        # Check that the response is 200 OK
+    def test_student_profile_view(self):
+        response = self.client.get(reverse('dashboard:student_profile'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'dashboard/profile_student.html')
 
-        # Check that the course is displayed
-        self.assertContains(response, 'COMP101')
-        self.assertContains(response, '50')
-        self.assertContains(response, str(int(round((self.at.absent_hours/self.at.total_hours)*100))))
-        # Log out the user
-        self.client.logout()
-
-        # Check that the user is redirected to the login page
-        response = self.client.get(reverse('dashboard:dashboard'))
-        self.assertEqual(response.status_code, 302)
-
-    def test_dashboard_view_by_teacher(self):
-
-        # Log in the teacher
-        self.client.login(username='teacheruser', password='teacherpassword')
-
-        # Get the dashboard view
-        response = self.client.get(reverse('dashboard:dashboard'))
-
-        # Check that the response is 200 OK
-        self.assertEqual(response.status_code, 200)
-
-        # Check that the course is displayed
-        self.assertContains(response, 'COMP101')
-
-        # Log out the teacher
-        self.client.logout()
-
-        # Check that the teacher is redirected to the login page
-        response = self.client.get(reverse('dashboard:dashboard'))
-        self.assertEqual(response.status_code, 302)
-
-class CourseDashboardViewTests(TestCase):
-
+class StudentCoursesTest(TestCase):
     def setUp(self):
-        # Create a teacher
-        self.teacher = Teacher.objects.create_user(
-            username='teacheruser',
-            password='teacherpassword',
-            email='test1@example.com',
-            fullName='Test User',
-            teacher_id='1'
-        )
+        self.client = Client()
+        self.user = Student.objects.create_user(
+            id='testuser', password='testpassword')
+        self.client.login(username=self.user.id, password='testpassword')
 
-        # Create a course
-        self.course = Course.objects.create(
-            course_code='COMP101',
-            course_name='Introduction to Computer Science',
-            credits='3',
-            ects='6',
-            teacher=self.teacher
-        )
-
-        # Create a classroom
-        self.classroom = Classroom.objects.create(
-            room_number='D114'
-        )
-
-        self.student = Student.objects.create_user(
-            username='studentuser',
-            password='testpassword',
-            email='test2@example.com',
-            fullName='Test User',
-            student_id='2'
-        )
-        # Create a schedule
-        self.schedule = Schedule.objects.create(
-            student=self.student,
-            course=self.course,
-            teacher=self.teacher,
-            day_of_week='Monday',
-            start_time='08:00:00',
-            end_time='09:00:00',
-            classroom = self.classroom,
-            group = '01_N'
-        )
-
-    def test_course_dashboard_view(self):
-
-        # Log in the teacher
-        self.client.login(username='teacheruser', password='teacherpassword')
-
-        # Get the course dashboard view
-        response = self.client.get(reverse('dashboard:course_dashboard', args=[self.course.course_id, self.teacher.teacher_id]))
-
-        # Check that the response is 200 OK
+    def test_student_courses_view(self):
+        response = self.client.get(reverse('dashboard:student_courses'))
         self.assertEqual(response.status_code, 200)
-        # Check that the course is displayed
-        self.assertContains(response, 'Introduction to Computer Science')
-        self.assertContains(response, '01_N')
-        # Check that the schedule is displayed
-        self.assertContains(response, 'D114')
+        self.assertTemplateUsed(response, 'dashboard/courses_student.html')
 
-        # Log out the teacher
-        self.client.logout()
 
-        # Check that the teacher is redirected to the login page
-        response = self.client.get(reverse('dashboard:course_dashboard', args=[self.course.course_id, self.teacher.teacher_id]))
-        self.assertEqual(response.status_code, 302)
+
+class StudentCoursesSpecificOneTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = Student.objects.create_user(
+            id='testuser', password='testpassword')
+        self.client.login(username=self.user.id, password='testpassword')
+        self.teacher = Teacher.objects.create_user(
+            id='testteach', password='testpassword' , email='teach@sdu.kz'
+        )
+        self.course_code = 'CS101'
+        self.specific_course = specific_course.objects.create(
+            course_code=self.course_code,
+            is_lecture = True,
+            specific_course_id = 1,
+            group = 3,
+            course_part = 0,
+            course_start_time = time(8, 30, 0),
+            course_start_day = 0
+        )
+        self.student_courses = students_courses.objects.create(
+            student_id = 'testuser',
+            specific_course_id = 1
+        )
+        self.course = course.objects.create(
+            course_code = 'CS101',
+            credits = '5',
+            hours = 45,
+            course_name = 'Software Engineering',
+            ECTS = 5,
+        )
+        self.teacher_courses = teachers_courses.objects.create(
+            teacher_id = 'testteach',
+            specific_course_id = 1
+        )
+
+    def test_student_courses_specific_one_view(self):
+        response = self.client.get(reverse('dashboard:student_courses_specific_one', args=(self.course_code,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'dashboard/course_specific_student.html')
+
+class TeacherViewsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.teacher = Teacher.objects.create_user(
+            id='testteach', password='testpassword'
+        )
+        self.course1 = course.objects.create(
+            course_code='CS101',
+            credits='3',
+            hours=45,
+            course_name='Introduction to Computer Science',
+            ECTS=5
+        )
+
+        self.course2 = course.objects.create(
+            course_code='MATH101',
+            credits='3',
+            hours=45,
+            course_name='Calculus I',
+            ECTS=5
+        )
+
+        self.specific_course1 = specific_course.objects.create(
+            course_code='CS101',
+            is_lecture=True,
+            specific_course_id=1,
+            course_part=1,
+            course_start_time=time(8, 30, 0),
+            course_start_day=1
+        )
+
+        self.specific_course2 = specific_course.objects.create(
+            course_code='CS101',
+            is_lecture=False,
+            specific_course_id=2,
+            course_part=2,
+            course_start_time=time(10, 30, 0),
+            course_start_day=1
+        )
+
+        self.specific_course3 = specific_course.objects.create(
+            course_code='MATH101',
+            is_lecture=True,
+            specific_course_id=3,
+            course_part=1,
+            course_start_time=time(13, 30, 0),
+            course_start_day=1
+        )
+
+        teachers_courses.objects.create(
+            teacher_id='testteach',
+            specific_course_id=1
+        )
+
+        teachers_courses.objects.create(
+            teacher_id='testteach',
+            specific_course_id=2
+        )
+
+        teachers_courses.objects.create(
+            teacher_id='testteach',
+            specific_course_id=3
+        )
+
+        self.client.post(reverse('account:login'), {'id': 'testteach', 'password': 'testpassword', 'role':'teacher'})
+
+    def test_teacher_profile(self):
+        response = self.client.get(reverse('dashboard:teacher_profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'dashboard/profile_teacher.html')
+
+    def test_teacher_courses(self):
+        response = self.client.get(reverse('dashboard:teacher_courses'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'dashboard/courses_teacher.html')
+
+    def test_teacher_courses_specific_one(self):
+        response = self.client.get(reverse('dashboard:teacher_courses_specific_one', args=('CS101', 'L')))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'dashboard/course_specific_teacher.html')
+
+class DashboardViewsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.student = Student.objects.create_user(
+            id='testid', password='testpassword'
+        )
+        self.client.post(reverse('account:login'), {'id': 'testid', 'password': 'testpassword', 'role':'student'})
+
+    def test_student_document_submission(self):
+        mock_file = SimpleUploadedFile('test.pdf', b'file_content', content_type='application/pdf')
+        mock_form = DocumentSubmissionForm(data={'description': 'Test description'}, files={'document': mock_file})
+
+        response = self.client.post(reverse('dashboard:student_document_submission'), data=mock_form.data, files=mock_form.files)
+
+        self.assertEqual(response.status_code, 200)

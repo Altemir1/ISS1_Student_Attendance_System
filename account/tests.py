@@ -4,7 +4,7 @@ from django.urls import reverse
 from .forms import LoginForm
 from django.contrib.auth.hashers import make_password
 from .models  import Student, Teacher
-'''
+
 class AccountTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -21,7 +21,7 @@ class AccountTests(TestCase):
 
     def test_valid_login(self):
         response = self.client.post(reverse('account:login'), {'id': 'testid', 'password': 'testpassword', 'role':'student'})
-        self.assertRedirects(response, reverse('dashboard:dashboard'))
+        self.assertRedirects(response, reverse('dashboard:student_profile'))
         self.assertTrue(self.client.session['_auth_user_id'])
 
     def test_invalid_login(self):
@@ -32,4 +32,3 @@ class AccountTests(TestCase):
     def test_logout_view(self):
         response = self.client.get(reverse('account:logout'))
         self.assertRedirects(response, reverse('account:login'))
-'''
