@@ -34,8 +34,9 @@
                 {% endfor %}
             </tbody>
         </table>
-        {% if course.lecture_attendance_time > 0 %}
+        {% if course.lecture_attendance_time == 0 %}
             <form class = "form" action="{% url 'attendance:manual_attendance' course_code=course.course_code is_lecture=1 %}"onsubmit="showLoadingOverlay()" method="post" id="login-form">
+                {% csrf_token %}
                 <input type="submit" class="btn_for_attendance" value="Register Attendance"/>
             </form>
         {% endif %}
@@ -72,6 +73,7 @@
         </table>
         {% if course.practice_attendance_time > 0 %}
             <form class = "form" action="{% url 'attendance:manual_attendance' course_code=course.course_code is_lecture=0 %}"onsubmit="showLoadingOverlay()" method="post" id="login-form">
+                {% csrf_token %}
                 <input type="submit" class="btn_for_attendance" value="Register Attendance"/>
             </form>
         {% endif %}
