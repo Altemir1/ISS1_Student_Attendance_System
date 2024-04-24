@@ -216,9 +216,6 @@ th:last-child {
     background-color: #ff2a2abe;
 }
 
-
-
-
 .form_container{
     margin-left: 10vw;
     width: 65vw;
@@ -271,4 +268,41 @@ th:last-child {
 }
 .submit_document_button:hover{
     background-color: #eb3f3f;
+}
+
+.gen_courses_attendance_info{
+    display: flex;
+    flex-direction: column;
+}
+
+.attendance_taker_wrapper{
+    width: 85vw;
+    height: 10vh;
+}
+.week_att{
+    margin: 0;
+    color:#be6a2a;
+    padding-left:1vw;
+    padding-right:1vw;
+    color: white;
+    background-color:#263B83;
+    font-family: gilroy-600;
+}
+.week_att:hover{
+    background-color:#be6a2a;
+}
+.btn_for_attendance{
+    background-color:#be6a2a;
+    margin-top:5vh;
+    padding: 1vh;
+    color: #FFFFFF;
+    font-family: gilroy-600;
+    margin-left:60vw;
+    border-radius: 10px;
+    border: none;
+    font-size:1.1rem;
+    cursor: pointer;
+}
+.btn_for_attendance:hover{
+    scale: 1.1;
 }

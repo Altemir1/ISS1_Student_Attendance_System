@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class teachers_courses(models.Model):
     teacher_id = models.CharField(max_length=9, blank=False)
@@ -46,6 +47,7 @@ class specific_course(models.Model):
     course_part = models.IntegerField(blank=False,default=0)
     course_start_time = models.TimeField()
     course_start_day = models.IntegerField(blank=False,default=0) # monday is 1 , sunday is 7 etc
+    registration_deadline = models.DateTimeField(default=timezone.now(), blank=False)
     
     def __str__(self):
         rep = f'{self.course_code} {self.group}-'

@@ -15,18 +15,47 @@
                     <th>Code</th>
                     <th>Group</th>
                     <th>Type</th>
+                    <th>Taking Attendance</th>
                 </tr>
             </thead>
             <tbody>
                 {% for course in teacher_courses %}
-                        <tr onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one_attendance' course_code=course.course_code  group=course.group course_type=course_type %}'"> 
-                        <td>{{ course.course_code }}</td>
-                        <td>{{ course.group }}</td>
-                        <td>{{ course_type }}</td>    
+                        <tr > 
+                        <td onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one_attendance' course_code=course.course_code  group=course.group course_type=course_type %}'">{{ course.course_code }}</td>
+                        <td onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one_attendance' course_code=course.course_code  group=course.group course_type=course_type %}'">{{ course.group }}</td>
+                        <td onclick="window.location.href='{% url 'dashboard:teacher_courses_specific_one_attendance' course_code=course.course_code  group=course.group course_type=course_type %}'">{{ course_type }}</td>
+                        <td style="display:flex;align-items:center;justify-content:center;">
+                            {% if course.registration_time_left == 0 %}
+                                <h3 class="week_att" onclick="sendtheform({{course.group}});">
+                                    No
+                                    <form action="{% url 'attendance:open_registration' course_code=course.course_code group=course.group course_type=course_type %}" method="post" id="toggle-form-{{course.group}}" style="display: none;">
+                                        {% csrf_token %}
+                                        <input type="text" name="status" id="status-input" readonly>
+                                    </form>
+                                </h3>
+                            {% else %}
+                                <h3 class="week_att">
+                                    Yes
+                                </h3>
+                                <script>
+                                    // Reload the page after course.registration_time_left seconds
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, {{ course.registration_time_left }} * 1000); // Convert seconds to milliseconds
+                                </script> 
+                            {% endif %}
+                        </td>    
                         </tr>
                 {% endfor %}
             </tbody>
         </table>
     <section>
 </div>
+<script>
+    function sendtheform(counter) {
+        console.log(counter)
+        const form = document.getElementById(`toggle-form-${counter}`);
+        form.submit();
+    }
+</script>
 {% endblock content %}

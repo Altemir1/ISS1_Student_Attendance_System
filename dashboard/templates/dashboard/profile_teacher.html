@@ -4,7 +4,7 @@
 <div class="profile_container">
     {% with teacher=request.user.teacher %}
     <div class = "section_info">
-        <h2>TEACHER INFORMATION</h2>
+        <h2>TEACHER PROFILE</h2>
     </div>
     <div class="student_info">
             <div class="info">
@@ -15,7 +15,7 @@
                     <p>EMAIL:&nbsp;<span>{{ teacher.id }}@stu.sdu.edu.kz</span></p>
                 </div>
                 <div class="prof_image_container"style="display:flex; justify-content:center;">
-                    <img src="{% static 'img/prof_pic.png' %}" style="width:20vw;height:20vh" alt="Profile picture">
+                    <img src="{% static 'img/prof_pic.png' %}" style="width:15vw;height:30vh" alt="Profile picture">
                     {% comment %} Image {% endcomment %}
                 </div>
             </div>

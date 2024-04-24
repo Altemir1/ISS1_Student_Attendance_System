@@ -28,13 +28,17 @@
                    <td>{{ forloop.counter }}</td>
                    <td>{{ attendance.week }}</td>
                    <td>{{ attendance.start_time|time:"H:i"  }}</td>
-                   <td>{% if attendance.status == 1 %}✅{% elif attendance.status == 2 %}❌{% else %} P {% endif %}</td>
+                   <td>{% if attendance.status == 1 %}✅{% elif attendance.status == 2 %}❌{% elif attendance.status == 3 %}M{% else %}P{% endif %}</td>
                    <td>F301</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
+        {% if course.lecture_attendance_time > 0 %}
+            <form class = "form" action="{% url 'attendance:manual_attendance' course_code=course.course_code is_lecture=1 %}"onsubmit="showLoadingOverlay()" method="post" id="login-form">
+                <input type="submit" class="btn_for_attendance" value="Register Attendance"/>
+            </form>
+        {% endif %}
     </div>
     {% if practice_attendances %}
     <div class="practice">
@@ -66,7 +70,11 @@
                 {% endfor %}
             </tbody>
         </table>
-
+        {% if course.practice_attendance_time > 0 %}
+            <form class = "form" action="{% url 'attendance:manual_attendance' course_code=course.course_code is_lecture=0 %}"onsubmit="showLoadingOverlay()" method="post" id="login-form">
+                <input type="submit" class="btn_for_attendance" value="Register Attendance"/>
+            </form>
+        {% endif %}
     </div>
     {% endif %}
 </div>

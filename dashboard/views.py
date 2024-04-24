@@ -4,6 +4,7 @@ from attendance.models import course, attendance, specific_course, teachers_cour
 from account.models import Teacher, Student
 from .forms import DocumentSubmissionForm
 from django.core.files.storage import FileSystemStorage
+from django.utils import timezone
 import math
 
 #STUDENT
@@ -37,7 +38,7 @@ def student_courses(request):
                     break
         else:
             course_codes.append(course_of_student.course_code)
-            present=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=1))
+            present=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=1))+len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=3))
             P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
             absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
             course_info.append([P,present,absent])
@@ -90,7 +91,12 @@ def student_courses_specific_one(request,  course_code=None):
     
     course_item['lecturer']=lecturer.first_name+" "+lecturer.last_name
     course_item['lecturer_status']=lecturer.status
-    
+    #####################################
+    calculated_time = (specific_course.objects.filter(specific_course_id=course_code_matched_ids_l[0]).first().registration_deadline- timezone.now()).total_seconds()
+    if calculated_time<0 :
+        calculated_time = 0
+    course_item['lecture_attendance_time']=calculated_time
+    #####################################
     lecture_attendances = []
     attendances = attendance.objects.filter(student_id=request.user.student.id,specific_course_id__in=course_code_matched_ids_l)
     
@@ -114,6 +120,14 @@ def student_courses_specific_one(request,  course_code=None):
         course_item['practice_teacher']=practice_teacher.first_name+" "+practice_teacher.last_name
         course_item['practice_teacher_status']=practice_teacher.status
 
+        #####################################
+        calculated_time = (specific_course.objects.filter(specific_course_id=course_code_matched_ids_p[0]).first().registration_deadline- timezone.now()).total_seconds()
+        if calculated_time<0 :
+            calculated_time = 0
+        course_item['practice_attendance_time']=calculated_time
+        #####################################
+
+        
         for att in attendances:
             start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
             practice_attendances.append({
@@ -193,6 +207,15 @@ def teacher_courses_specific_one(request,course_code,course_type):
     
     teachers_ = teachers_courses.objects.filter(teacher_id=request.user.teacher.id).values_list('specific_course_id', flat=True)
     teachers_course_objects = specific_course.objects.filter(specific_course_id__in = teachers_,course_code=course_code,is_lecture=is_lecture, course_part=1 )
+    
+    for cours_obj in teachers_course_objects:
+        all_attendances_of_this_course = len(attendance.objects.filter(specific_course_id=cours_obj.specific_course_id).values_list('weak_count', flat=True))
+        student_number_with_this_course = len(students_courses.objects.filter(specific_course_id=cours_obj.specific_course_id))
+        cours_obj.week=round(all_attendances_of_this_course/student_number_with_this_course)+1
+        time_left = (cours_obj.registration_deadline - timezone.now()).total_seconds()
+        if time_left<0:
+            time_left = 0
+        cours_obj.registration_time_left=time_left
     
     return render(request, 'dashboard/course_specific_teacher.html', {'course_code':course_code,'course_type':course_type,'course_name':course_name,'teacher_courses': teachers_course_objects,'status1':"",'status2':"active"})
 
