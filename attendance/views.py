@@ -69,7 +69,7 @@ def manual_attendance(request,course_code, is_lecture):
     
     return redirect('dashboard:student_courses_specific_one', course_code=course_code)
 
-def card_reader(request, uid):
+def card_reader(request):
     uid = request.GET.get('uid', '')
     
     # Check if a UID is provided
