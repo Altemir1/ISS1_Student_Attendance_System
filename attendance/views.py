@@ -76,8 +76,8 @@ def card_reader(request):
     # Check if a UID is provided
     if uid:
         # Your logic here
-        id_of_a_student = card_of_student.objects.filter(uid=uid).first()
-        one_student = Student.objects.filter(id=id_of_a_student.student_id).first()
+        id_of_a_student = card_of_student.objects.get(uid=uid)
+        one_student = Student.objects.get(id=id_of_a_student.student_id)
 
         response_text = f"SALAMALEIKUM {one_student.first_name}"
 
