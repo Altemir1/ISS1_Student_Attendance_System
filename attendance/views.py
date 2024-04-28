@@ -69,8 +69,17 @@ def manual_attendance(request,course_code, is_lecture):
     
     return redirect('dashboard:student_courses_specific_one', course_code=course_code)
 
-def card_reader(uid):
-    # Your view logic here
-    response_text = f"UID: {uid}"
+def card_reader(request, uid):
+    uid = request.GET.get('uid', '')
     
-    return HttpResponse(response_text, content_type="text/plain")
+    # Check if a UID is provided
+    if uid:
+        # Your logic here
+        response_text = f"Processing request for UID: {uid}"
+        response_status = 200  # HTTP status code 200 OK
+    else:
+        response_text = "No UID provided"
+        response_status = 400  # HTTP status code 400 Bad Request
+    
+    # Return an HTTP response with the response text
+    return HttpResponse(response_text, content_type="text/plain", status=response_status)
