@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from attendance.models import course, attendance, specific_course, teachers_courses, students_courses
+from attendance.models import course, attendance, specific_course, teachers_courses, students_courses, card_of_student
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
+from account.models import Teacher, Student
 
 @login_required
 def att_toggle(request, att_id, course_code, group, course_type):
@@ -75,11 +76,20 @@ def card_reader(request):
     # Check if a UID is provided
     if uid:
         # Your logic here
-        response_text = f"Processing request for UID: {uid}"
+        
+        id_of_a_student = card_of_student.objects.filter(uid=uid).first()
+        one_student = Student.objects.filter(student_id=id_of_a_student).first()
+        
+        
+        
+        response_text = f"SALAMALEIKUM {one_student.first_name}"
+        
         response_status = 200  # HTTP status code 200 OK
     else:
         response_text = "No UID provided"
         response_status = 400  # HTTP status code 400 Bad Request
+    
+    
     
     # Return an HTTP response with the response text
     return HttpResponse(response_text, content_type="text/plain", status=response_status)

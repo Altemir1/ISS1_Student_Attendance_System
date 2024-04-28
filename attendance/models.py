@@ -56,3 +56,7 @@ class specific_course(models.Model):
         else:
             rep += 'P'
         return rep + f' {self.course_start_time}  id{self.specific_course_id}'
+
+class card_of_student(models.Model):
+    uid = models.CharField(max_length=6,blank=False)
+    student_id = models.CharField(max_length=9, blank=False)
