@@ -9,7 +9,12 @@ from datetime import timedelta
 def att_toggle(request, att_id, course_code, group, course_type):
     att_row = attendance.objects.get(att_id=att_id)
     value=att_row.status
-    value=(value+1)%4
+    if value == 0 or value == 3: 
+        print("No")
+    else:    
+        value=(value+1)%3
+        if value == 0 :
+            value=1
     att_row.status=value
     att_row.save()
     print(att_row.status)
@@ -63,3 +68,7 @@ def manual_attendance(request,course_code, is_lecture):
         current_free_id+=1
     
     return redirect('dashboard:student_courses_specific_one', course_code=course_code)
+
+def card_reader(uid):
+    print("UID:", uid)
+    return HttpResponse(status=200)
