@@ -70,5 +70,7 @@ def manual_attendance(request,course_code, is_lecture):
     return redirect('dashboard:student_courses_specific_one', course_code=course_code)
 
 def card_reader(uid):
-    print("UID:", uid)
-    return HttpResponse(status=200)
+    # Your view logic here
+    response_text = f"UID: {uid}"
+    
+    return HttpResponse(response_text, content_type="text/plain")
