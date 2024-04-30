@@ -76,10 +76,44 @@ def card_reader(request):
     # Check if a UID is provided
     if uid:
         # Your logic here
-        id_of_a_student = card_of_student.objects.get(uid=uid)
-        one_student = Student.objects.get(id=id_of_a_student.student_id)
 
-        response_text = f"SALAMALEIKUM {one_student.first_name}"
+        id_of_a_student = card_of_student.objects.filter(uid=uid).first()
+
+        specific_course_ids_of_a_student = students_courses.objects.filter(student_id=id_of_a_student.student_id).values_list('specific_course_id', flat=True)
+
+        course_objects_for_attendance = specific_course.objects.filter(specific_course_id__in=specific_course_ids_of_a_student)
+
+        current_time = timezone.now()
+        # Add 6 hours to the current time
+        current_time_with_offset = current_time + timedelta(hours=6)
+
+        for course in course_objects_for_attendance:
+            if course.course_start_time<current_time_with_offset and  course.course_start_time+timedelta(minutes=15)>current_time_with_offset:
+                if (timezone.now().weekday() + 1) % 7 + 1 == course.course_start_day:
+                    all_attendances = attendance.objects.filter(specific_course_id=course.specific_course_id, student_id=id_of_a_student ).values_list('weak_count', flat=True)
+
+                    week_count=0
+                    if len(all_attendances)==0:
+                        week_count=1
+                    else:
+                        for wc in all_attendances:
+                            if week_count < wc:
+                                week_count=wc
+                        week_count+=1
+
+                    current_free_id = len(attendance.objects.all())
+
+                    attendance_item = attendance(
+                        student_id=id_of_a_student,
+                        specific_course_id=course.specific_course_id,
+                        status=3,  # Default status, you can change it as needed
+                        weak_count=week_count,  # Default weak_count, you can change it as needed
+                        att_id=current_free_id  # Default att_id, you can change it as needed
+                    )
+
+                    attendance_item.save()
+
+        response_text = f"It worked "
 
         response_status = 200  # HTTP status code 200 OK
     else:
