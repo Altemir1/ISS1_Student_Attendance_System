@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from attendance.models import course, attendance, specific_course, teachers_courses, students_courses, card_of_student
 from django.http import HttpResponse
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 from account.models import Teacher, Student
 
 @login_required
@@ -63,6 +63,7 @@ def manual_attendance(request,course_code, is_lecture):
             status=3,  # Default status, you can change it as needed
             weak_count=week_count,  # Default weak_count, you can change it as needed
             att_id=current_free_id  # Default att_id, you can change it as needed
+            
         )
 
         attendance_item.save()
@@ -76,42 +77,47 @@ def card_reader(request):
     # Check if a UID is provided
     if uid:
         # Your logic here
-
+        current_date_time = timezone.localtime(timezone.now(), timezone=timezone.get_fixed_timezone(300))
+        
+        current_day = (current_date_time.date().weekday()+1)%8
+        
+        rounded_minutes = (current_date_time.minute // 15 + 1) * 15
+        rounded_date = current_date_time.replace(minute=rounded_minutes, second=0, microsecond=0)
+        rounded_time = rounded_date.strftime('%H:%M')
+        uid=uid[0:len(uid)-1]
+        
         id_of_a_student = card_of_student.objects.filter(uid=uid).first()
-
+        
         specific_course_ids_of_a_student = students_courses.objects.filter(student_id=id_of_a_student.student_id).values_list('specific_course_id', flat=True)
-
-        course_objects_for_attendance = specific_course.objects.filter(specific_course_id__in=specific_course_ids_of_a_student)
-
-        current_time = timezone.now()
-        # Add 6 hours to the current time
-        current_time_with_offset = current_time + timedelta(hours=6)
-
-        for course in course_objects_for_attendance:
-            if course.course_start_time<current_time_with_offset and  course.course_start_time+timedelta(minutes=15)>current_time_with_offset:
-                if (timezone.now().weekday() + 1) % 7 + 1 == course.course_start_day:
-                    all_attendances = attendance.objects.filter(specific_course_id=course.specific_course_id, student_id=id_of_a_student ).values_list('weak_count', flat=True)
-
-                    week_count=0
-                    if len(all_attendances)==0:
-                        week_count=1
-                    else:
-                        for wc in all_attendances:
-                            if week_count < wc:
-                                week_count=wc
-                        week_count+=1
-
-                    current_free_id = len(attendance.objects.all())
-
-                    attendance_item = attendance(
-                        student_id=id_of_a_student,
-                        specific_course_id=course.specific_course_id,
-                        status=3,  # Default status, you can change it as needed
-                        weak_count=week_count,  # Default weak_count, you can change it as needed
-                        att_id=current_free_id  # Default att_id, you can change it as needed
-                    )
-
-                    attendance_item.save()
+        
+        posible_attending_courses = specific_course.objects.filter(course_start_day=2,specific_course_id__in=specific_course_ids_of_a_student,course_start_time=rounded_time)
+        
+        print("id :",id_of_a_student.student_id)
+        print("courses of",id_of_a_student.student_id)
+        print("current_day",current_day)
+        print("rounded_time",rounded_time)
+        #if there is a course 
+        for crs in posible_attending_courses:
+            all_attendances=attendance.objects.filter(specific_course_id=crs.specific_course_id, student_id=id_of_a_student.student_id ).values_list('weak_count', flat=True)
+            week_count=1
+            for wc in all_attendances:
+                if week_count < wc:
+                    week_count=wc
+            week_count+=1
+            attendance_id = len(all_attendances)
+            print("The course",crs.course_code)
+            
+            #SAVE ONLY IF IT DOES NOT ALREADY EXISTS
+            if not attendance.objects.filter(student_id=id_of_a_student.student_id,specific_course_id=crs.specific_course_id,date=rounded_date.date()).exists():    
+                attendance_item = attendance(
+                    student_id=id_of_a_student.student_id,
+                    specific_course_id=crs.specific_course_id,
+                    status=1, 
+                    weak_count=week_count,  # Default weak_count, you can change it as needed
+                    att_id=attendance_id,  # Default att_id, you can change it as needed
+                    date=rounded_date.date()
+                )
+                attendance_item.save()
 
         response_text = f"It worked "
 
@@ -119,8 +125,6 @@ def card_reader(request):
     else:
         response_text = "No UID provided"
         response_status = 400  # HTTP status code 400 Bad Request
-
-
 
     # Return an HTTP response with the response text
     return HttpResponse(response_text, content_type="text/plain", status=response_status)
