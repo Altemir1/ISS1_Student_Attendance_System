@@ -41,7 +41,8 @@ def manual_attendance(request,course_code, is_lecture):
         is_lecture = True
     else:
         is_lecture = False
-
+    current_date = timezone.localtime(timezone.now(), timezone=timezone.get_fixed_timezone(300)).date()
+    
     specific_course_ids_of_a_student = students_courses.objects.filter(student_id=request.user.student.id).values_list('specific_course_id', flat=True)
     needed_ids_for_attendance = specific_course.objects.filter(specific_course_id__in=specific_course_ids_of_a_student, is_lecture=is_lecture,course_code=course_code).values_list('specific_course_id', flat=True)
 
@@ -57,17 +58,19 @@ def manual_attendance(request,course_code, is_lecture):
                 week_count=wc
         week_count+=1
     for each_id in needed_ids_for_attendance:
-        attendance_item = attendance(
-            student_id=request.user.student.id,
-            specific_course_id=each_id,
-            status=3,  # Default status, you can change it as needed
-            weak_count=week_count,  # Default weak_count, you can change it as needed
-            att_id=current_free_id  # Default att_id, you can change it as needed
-            
-        )
+        
+        if not attendance.objects.filter(student_id=request.user.student.id,specific_course_id=each_id,date=current_date).exists():
+            attendance_item = attendance(
+                student_id=request.user.student.id,
+                specific_course_id=each_id,
+                status=3,  # Default status, you can change it as needed
+                weak_count=week_count,  # Default weak_count, you can change it as needed
+                att_id=current_free_id,  # Default att_id, you can change it as needed
+                date=current_date
+            )
 
-        attendance_item.save()
-        current_free_id+=1
+            attendance_item.save()
+            current_free_id+=1
 
     return redirect('dashboard:student_courses_specific_one', course_code=course_code)
 
