@@ -1,10 +1,13 @@
+from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from attendance.models import course, attendance, specific_course, teachers_courses, students_courses
+from dashboard.models import SubmittedDocument
 from account.models import Teacher, Student
 from .forms import DocumentSubmissionForm
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
+
 import math
 
 #STUDENT
@@ -137,39 +140,56 @@ def student_courses_specific_one(request,  course_code=None):
             })
         return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'practice_attendances':practice_attendances,'status1':"",'status2':"active",'status3':""})
 
-@login_required
-def student_document_submission(request):
-    context = {'status1':"",'status2':"",'status3':"active"}
-    if request.method == 'POST':
-        form = DocumentSubmissionForm(request.POST, request.FILES)
-        if form.is_valid():
-            
-            # Access the uploaded document
-            document = form.cleaned_data['document']
+@login_required 
+def student_document_submission(request): 
+    documents = SubmittedDocument.objects.filter(student=request.user) 
+    context = {'status1':"",'status2':"",'status3':"active",'documents': documents} 
+    if request.method == 'POST': 
+        form = DocumentSubmissionForm(request.POST, request.FILES) 
+        if form.is_valid():    
+            new_document = SubmittedDocument() 
+            new_document.student = request.user 
+            new_document.description = form.cleaned_data['description'] 
+            new_document.document = form.cleaned_data['document'] 
+            new_document.save()            
+            context['success']= 'Your document has been received!' 
+            context['form']=form 
+            return render(request, 'dashboard/document_submission_student.html',context)  # Redirect to success page after handling 
+        else: 
+            context['error']="Your document submission process had some issues Note: ONLY .pdf files please  !" 
+            context['form']=form 
+    else: 
+        context['form'] = DocumentSubmissionForm() 
+    return render(request, 'dashboard/document_submission_student.html', context) 
 
-            # Create a file storage instance
-            fs = FileSystemStorage()
+@login_required 
+def remove_document(request, doc_id): 
+    document = SubmittedDocument.objects.get(id=doc_id, student=request.user) 
+    document.delete() 
+    return redirect('dashboard:student_document_submission') 
 
-            # Save the uploaded file
-            filename = fs.save(document.name, document)
+@login_required 
+def download_document(request, doc_id): 
+    try: 
+        document = SubmittedDocument.objects.get(id=doc_id, student=request.user) 
+        response = FileResponse(document.document.open(), as_attachment=True, filename=document.document.name) 
+        return response 
+    except SubmittedDocument.DoesNotExist: 
+        raise Http404("Document does not exist")
 
-            # I want to store it and store the description in a table for later checking and id of a student 
-            print(form.cleaned_data['description'])
-            uploaded_file_url = fs.url(filename)
-            
-            
-            context['success']= 'Your document has been received!'
-            context['form']=form
-            
-            return render(request, 'dashboard/document_submission_student.html',context)  # Redirect to success page after handling
-        else:
-            context['error']="Your document submission process had some issues Note: ONLY .pdf files please  !"
-            context['form']=form
-            
-    else:
-        context['form'] = DocumentSubmissionForm()
-    return render(request, 'dashboard/document_submission_student.html', context)
-
+@login_required 
+def download_document_admin(request, doc_name):
+    try: 
+        # Retrieve all documents for the user 
+        documents = SubmittedDocument.objects.filter(student=request.user) 
+         
+        # Filter in Python by checking the filename part of each document's path 
+        document = next(doc for doc in documents if doc.document.name.split('/')[-1] == doc_name) 
+         
+        response = FileResponse(document.document.open(), as_attachment=True, filename=document.document.name) 
+        return response 
+    except StopIteration: 
+        raise Http404("Document does not exist")
 #TEACHER 
 @login_required
 def teacher_profile(request):
@@ -243,7 +263,8 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
                 })
                 attendances_of_student = attendance.objects.filter(specific_course_id=crs.specific_course_id,student_id=student.id).order_by('weak_count')
                 for att in attendances_of_student:
-                    if i==0:
+                    
+                    if i==0 :
                         hours.append([crs.course_start_time])
                     students[i]["attendances"].append([{"status":att.status,"attendance":att.att_id}])
             #IF THE LIST IS NOT EMPTY I GOTTA ADD UP THE VALUES WHICH WERE GOTTEN LATER
@@ -254,38 +275,4 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
                         hours[k].append(crs.course_start_time)
                     students[i]["attendances"][k].append({"status":att.status,"attendance":att.att_id})
     
-    #print(students[0]["attendances"])
-    #print(hours)
-    
     return render(request,'dashboard/course_specific_teacher_attendance.html',{'course_code':course_code,'group':group, 'course_name':course_name, 'course_type':course_type, 'students':students, 'weeks':hours,'status1':"",'status2':"active"})
-
-# #Gotta fix this 
-# @login_required
-# def student_document_submission(request):
-#     if request.method == 'POST':
-        
-#         form = HealthIssueForm(request.POST, request.FILES)
-        
-#         if form.is_valid():
-#             title = form.cleaned_data['title']
-#             description = form.cleaned_data['description']
-#             document = form.cleaned_data['document']
-            
-#             # Save the form data to the database
-#             health_issue = HealthIssue(title=title, description=description, document=document)
-#             health_issue.save()
-            
-#             messages.success(request, 'Health issue document submitted successfully.')
-#             return redirect('submit_health_issue')  # Redirect to the same page or another page
-            
-#         else:
-#             messages.error(request, 'Error submitting the health issue document. Please check the form.')
-            
-#     else:
-#         form = HealthIssueForm()
-    
-#     context = {
-#         'form': form
-#     }
-    
-#     return render(request, 'health_issue_form.html', context)

@@ -10,6 +10,13 @@ urlpatterns = [
     path('student_courses/', views.student_courses, name='student_courses'),
     path('student_courses_specific_one/<str:course_code>/', views.student_courses_specific_one, name='student_courses_specific_one'),
     path('student_document_submission/',views.student_document_submission, name='student_document_submission'),
+    
+    path('documents/remove/<int:doc_id>', views.remove_document, name='remove_document'), 
+    path('documents/download/<int:doc_id>', views.download_document, name='download_document'),
+    
+    path('student_documents/<str:doc_name>', views.download_document_admin, name='download_document_admin'),
+    
+    
     #TEACHER
     path('teacher_profile/', views.teacher_profile, name='teacher_profile'),
     path('teacher_courses/', views.teacher_courses, name="teacher_courses"),

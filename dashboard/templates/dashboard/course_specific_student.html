@@ -39,6 +39,11 @@
                 {% csrf_token %}
                 <input type="submit" class="btn_for_attendance" value="Register Attendance"/>
             </form>
+        {% else %}
+            <form class="form"  method="post" id="login-form">
+                {% csrf_token %}
+                <input type="submit" class="btn_for_attendance" style="background-color: rgba(128, 128, 128, 0.5); color: white; cursor: not-allowed; opacity: 0.5;" value="Register Attendance" disabled/>
+            </form>
         {% endif %}
     </div>
     {% if practice_attendances %}
@@ -76,6 +81,11 @@
                 {% csrf_token %}
                 <input type="submit" class="btn_for_attendance" value="Register Attendance"/>
             </form>
+        {%else%}
+            <form class="form"  method="post" id="login-form">
+                {% csrf_token %}
+                <input type="submit" class="btn_for_attendance" style="background-color: rgba(128, 128, 128, 0.5); color: white; cursor: not-allowed; opacity: 0.5;" value="Register Attendance" disabled/>
+            </form>    
         {% endif %}
     </div>
     {% endif %}
