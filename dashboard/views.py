@@ -20,6 +20,11 @@ def student_courses(request):
     course_codes = []
     course_info = [] # it will contain array [p, present, absent]
     gen_courses_info = []
+    
+    current_date_time = timezone.localtime(timezone.now(), timezone=timezone.get_fixed_timezone(300))
+        
+    current_date = current_date_time.date()
+    
     #Geting into students_courses table 
     specific_course_ids_of_a_student = students_courses.objects.filter(student_id=request.user.student.id).values_list('specific_course_id', flat=True)
     
@@ -31,9 +36,9 @@ def student_courses(request):
             for i, existing in enumerate(course_codes):
                 if existing == course_of_student.course_code:
                     
-                    present=len(attendance.objects.filter(student_id=request.user.student.id, specific_course_id=id_specific_course,status=1))
-                    P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
-                    absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
+                    present=len(attendance.objects.filter(student_id=request.user.student.id, specific_course_id=id_specific_course,status=1, date__lte=current_date))
+                    P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0,date__lte=current_date))
+                    absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2,date__lte=current_date))
                     
                     course_info[i][0]=course_info[i][0]+P
                     course_info[i][1]=course_info[i][1]+present
@@ -41,9 +46,9 @@ def student_courses(request):
                     break
         else:
             course_codes.append(course_of_student.course_code)
-            present=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=1))+len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=3))
-            P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0))
-            absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2))
+            present=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=1,date__lte=current_date))+len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=3))
+            P=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=0,date__lte=current_date))
+            absent=len(attendance.objects.filter(student_id=request.user.student.id,specific_course_id=id_specific_course,status=2,date__lte=current_date))
             course_info.append([P,present,absent])
     
     for i, code in enumerate(course_codes):
@@ -64,6 +69,9 @@ def student_courses(request):
 
 @login_required
 def student_courses_specific_one(request,  course_code=None):
+    current_date_time = timezone.localtime(timezone.now(), timezone=timezone.get_fixed_timezone(300))
+    current_date = current_date_time.date()
+    
     specific_course_ids_of_a_student = students_courses.objects.filter(student_id=request.user.student.id).values_list('specific_course_id', flat=True)
     course_obj = course.objects.filter(course_code=course_code).first()
     course_item = {}
@@ -104,12 +112,13 @@ def student_courses_specific_one(request,  course_code=None):
     attendances = attendance.objects.filter(student_id=request.user.student.id,specific_course_id__in=course_code_matched_ids_l)
     
     for att in attendances:
-        start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
-        lecture_attendances.append({
-            "week":str(att.weak_count)+"W",
-            "status":att.status,
-            "start_time":start_time
-        })
+        if att.date<=current_date:
+            start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
+            lecture_attendances.append({
+                "week":str(att.weak_count)+"W",
+                "status":att.status,
+                "start_time":start_time
+            })
     
     if len(course_code_matched_ids_p)==0:
         return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'status1':"",'status2':"active",'status3':""})
@@ -132,12 +141,13 @@ def student_courses_specific_one(request,  course_code=None):
 
         
         for att in attendances:
-            start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
-            practice_attendances.append({
-                "week":str(att.weak_count)+"W",
-                "status":att.status,
-                "start_time":start_time
-            })
+            if att.date<=current_date:
+                start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
+                practice_attendances.append({
+                    "week":str(att.weak_count)+"W",
+                    "status":att.status,
+                    "start_time":start_time
+                })
         return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'practice_attendances':practice_attendances,'status1':"",'status2':"active",'status3':""})
 
 @login_required 
@@ -224,7 +234,6 @@ def teacher_courses_specific_one(request,course_code,course_type):
     if course_type=="L":
         is_lecture = True
     course_name = course.objects.filter(course_code=course_code).first().course_name
-    
     teachers_ = teachers_courses.objects.filter(teacher_id=request.user.teacher.id).values_list('specific_course_id', flat=True)
     teachers_course_objects = specific_course.objects.filter(specific_course_id__in = teachers_,course_code=course_code,is_lecture=is_lecture, course_part=1 )
     
@@ -244,18 +253,17 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
     is_lecture = False
     if course_type=="L":
         is_lecture = True
-    
+
+    current_date = timezone.localtime(timezone.now(), timezone=timezone.get_fixed_timezone(300)).date()
     course_name = course.objects.filter(course_code=course_code).first().course_name
-    
     students=[]
     hours=[]
     course_info = specific_course.objects.filter(course_code=course_code,is_lecture=is_lecture,group=group).order_by('course_part')
-    
+
     for j,crs in enumerate(course_info):
         student_ids = students_courses.objects.filter(specific_course_id=crs.specific_course_id).values_list('student_id', flat=True)
         for i, id in enumerate(student_ids):
             student =  Student.objects.filter(id=id).first()
-            #ADD A STUDENT IF THE LIST IS EMPTY
             if len(students)<=i:
                 students.append({
                     "name":student.first_name+" "+student.last_name,
@@ -263,16 +271,18 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
                 })
                 attendances_of_student = attendance.objects.filter(specific_course_id=crs.specific_course_id,student_id=student.id).order_by('weak_count')
                 for att in attendances_of_student:
-                    
-                    if i==0 :
-                        hours.append([crs.course_start_time])
-                    students[i]["attendances"].append([{"status":att.status,"attendance":att.att_id}])
-            #IF THE LIST IS NOT EMPTY I GOTTA ADD UP THE VALUES WHICH WERE GOTTEN LATER
+                    if current_date >= att.date:
+                        if i==0 :
+                            hours.append([crs.course_start_time])
+                        students[i]["attendances"].append([{"status":att.status,"attendance":att.att_id}])
             else:
                 attendances_of_student = attendance.objects.filter(specific_course_id=crs.specific_course_id,student_id=student.id).order_by('weak_count')
                 for k, att in enumerate(attendances_of_student):
-                    if i==0:
-                        hours[k].append(crs.course_start_time)
-                    students[i]["attendances"][k].append({"status":att.status,"attendance":att.att_id})
-    
+                    if current_date >= att.date:
+                        if i==0:
+                            hours[k].append(crs.course_start_time)
+                        students[i]["attendances"][k].append({"status":att.status,"attendance":att.att_id})
+            
+        
+
     return render(request,'dashboard/course_specific_teacher_attendance.html',{'course_code':course_code,'group':group, 'course_name':course_name, 'course_type':course_type, 'students':students, 'weeks':hours,'status1':"",'status2':"active"})

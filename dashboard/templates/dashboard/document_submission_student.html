@@ -22,31 +22,31 @@
             </div>
 
             <button type="submit" class="submit_document_button">Submit</button>
-        </form>
-        
-        {% if documents %} 
-            <h2>Your Submissions:</h2> 
-            <ul> 
-                {% for doc in documents %} 
-                <li> 
-                    <a href="{% url 'dashboard:download_document' doc.id %}"> 
-                        {{ doc.document.name|cut:"student_documents/" }} 
-                    </a> - Uploaded on: {{ doc.submitted_at }} 
-                    <a href="{% url 'dashboard:remove_document' doc.id %}">Remove</a> 
-                </li> 
-            {% endfor %} 
-            </ul> 
-        {% endif %}
 
-        {% if error %}
-            <div id="error-messages" class="error-messages">
-                <p style="color: red ;text-align: center; font-size: 2.2vh; ">{{ error }}</p>
-            </div>
-        {% elif success %}
-        <div id="error-messages" class="error-messages">
-            <p style="color: white;text-align: center; font-size: 2.2vh; ">{{ success }}</p>
-        </div>
-        {% endif %}
+            {% if documents %} 
+            <h2>Your Submissions:</h2> 
+                <ul> 
+                    {% for doc in documents %} 
+                    <li> 
+                        <a href="{% url 'dashboard:download_document' doc.id %}"> 
+                            {{ doc.document.name|cut:"student_documents/" }} 
+                        </a> - Uploaded on: {{ doc.submitted_at }} 
+                        <a href="{% url 'dashboard:remove_document' doc.id %}">Remove</a> 
+                    </li> 
+                    {% endfor %} 
+                </ul> 
+            {% endif %}
+
+            {% if error %}
+                <div id="error-messages" class="error-messages">
+                    <p style="color: red ;text-align: center; font-size: 2.2vh; ">{{ error }}</p>
+                </div>
+            {% elif success %}
+                <div id="error-messages" class="error-messages">
+                    <p style="color: white;text-align: center; font-size: 2.2vh; ">{{ success }}</p>
+                </div>
+            {% endif %}
+        </form>
     </div>
 
 </div>

@@ -128,10 +128,12 @@ font-family: gilroy-600;
     color:#F6A667;
 }
 .attendance_container {
-    max-width: 55vw;
+    max-width: 60vw;
     display: flex;
     align-items: left;
     margin-left: 10vw;
+    overflow-x: scroll;
+    overflow-y: scroll;
 }
 
 .attendance_table {

@@ -35,7 +35,7 @@ class attendance(models.Model):
     status=models.IntegerField(blank=False,default=0) # 0 - is P and 1 - is attendant 2 - is absent
     weak_count = models.IntegerField(blank=False,default=0)
     att_id = models.IntegerField(blank=False,unique=True,default=0)
-    date = models.DateField(blank=True, null=True)
+    date = models.DateField(blank=False, null=False)
     
     def __str__(self):
         return f'{self.student_id} - {self.specific_course_id} - week{self.weak_count} - id{self.att_id}'
