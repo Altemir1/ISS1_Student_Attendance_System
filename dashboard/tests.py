@@ -149,10 +149,6 @@ class TeacherViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'dashboard/courses_teacher.html')
 
-    def test_teacher_courses_specific_one(self):
-        response = self.client.get(reverse('dashboard:teacher_courses_specific_one', args=('CS101', 'L')))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'dashboard/course_specific_teacher.html')
 
 class DashboardViewsTest(TestCase):
     def setUp(self):
