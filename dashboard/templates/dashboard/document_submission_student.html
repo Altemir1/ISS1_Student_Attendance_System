@@ -30,7 +30,15 @@
             </div>
 
             <button type="submit" class="submit_document_button">Submit</button>
-
+            <br>
+            {% for doc in documents %}
+            <li>
+                 <a href="{% url 'dashboard:download_document' doc.id %}">
+                {{ doc.document.name|cut:"student_documents/" }}
+                </a> - Uploaded on: {{ doc.submitted_at }}
+                <a href="{% url 'dashboard:remove_document' doc.id %}">Remove</a>
+            </li>
+            {% endfor %}
 
             {% if error %}
                 <div id="error-messages" class="error-messages">

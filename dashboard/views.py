@@ -176,7 +176,8 @@ def student_document_submission(request):
             student_courses.append(student_course)
             unique.append(repr)
     
-    context = {'status1':"",'status2':"",'status3':"active",'student_courses': student_courses}
+    documents = SubmittedDocument.objects.filter(student_id=request.user.student.id)
+    context = {'status1':"",'status2':"",'status3':"active",'student_courses': student_courses, "documents": documents}
     
     if request.method == 'POST': 
         form = DocumentSubmissionForm(request.POST, request.FILES) 
