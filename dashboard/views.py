@@ -203,20 +203,7 @@ def student_document_submission(request):
         context['form'] = DocumentSubmissionForm() 
     return render(request, 'dashboard/document_submission_student.html', context) 
 
-@login_required
-def student_document_history(request):
-    if request.method == 'POST':
-        if 'delete_id' in request.POST:  # Check if there's a delete action
-            document_id = request.POST.get('delete_id')
-            document = SubmittedDocument.objects.filter(id=document_id, student=request.user).first()
-            if document:
-                document.delete()
-                return redirect('student_document_history')  # Redirect after delete
-            else:
-                return HttpResponseNotAllowed("You cannot delete this document.")
 
-    documents = SubmittedDocument.objects.filter(student=request.user).order_by('-submitted_at')
-    return render(request, 'dashboard/student_history.html', {'documents': documents})
 
 @login_required 
 def remove_document(request, doc_id): 
