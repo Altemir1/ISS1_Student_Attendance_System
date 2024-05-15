@@ -115,10 +115,12 @@ def student_courses_specific_one(request,  course_code=None):
         if att.date<=current_date:
             start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
             lecture_attendances.append({
-                "week":str(att.weak_count)+"W",
+                "week":att.date,
                 "status":att.status,
                 "start_time":start_time
             })
+    
+    lecture_attendances = sorted(lecture_attendances, key=lambda att: att['week'])
     
     if len(course_code_matched_ids_p)==0:
         return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'status1':"",'status2':"active",'status3':""})
@@ -144,10 +146,11 @@ def student_courses_specific_one(request,  course_code=None):
             if att.date<=current_date:
                 start_time= specific_course.objects.filter(specific_course_id=att.specific_course_id).first().course_start_time
                 practice_attendances.append({
-                    "week":str(att.weak_count)+"W",
+                    "week":att.date,
                     "status":att.status,
                     "start_time":start_time
                 })
+        practice_attendances = sorted(practice_attendances, key=lambda att: att['week'])
         return render(request, 'dashboard/course_specific_student.html', {'course': course_item,'lecture_attendances':lecture_attendances,'practice_attendances':practice_attendances,'status1':"",'status2':"active",'status3':""})
 
 @login_required 
