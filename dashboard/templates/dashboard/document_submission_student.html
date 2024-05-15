@@ -36,7 +36,7 @@
             <li>
                  <a href="{% url 'dashboard:download_document' doc.id %}">
                 {{ doc.document.name|cut:"student_documents/" }}
-                </a> - Uploaded on: {{ doc.submitted_at }}
+                </a> - Uploaded on: {{ doc.submitted_at }} status:{%if doc.accepted %} seen {%else%} pending {% endif %}
                 <a href="{% url 'dashboard:remove_document' doc.id %}">Remove</a>
             </li>
             {% endfor %}

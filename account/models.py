@@ -45,7 +45,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_superuser
-
+    @property
+    def is_admin(self):
+        return hasattr(self, 'admin')
+    
 class Student(CustomUser):
     advisor = models.CharField(max_length=255, blank=False)
     major_program = models.CharField(max_length=255, blank=False)
@@ -58,3 +61,8 @@ class Teacher(CustomUser):
     
     def __str__(self):
         return f"{self.id} {self.first_name}"  # Changed from teacher_id to id
+
+class Admin(CustomUser):
+    
+    def __str__(self):
+        return f"{self.id} {self.first_name}"  
