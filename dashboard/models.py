@@ -7,9 +7,8 @@ class SubmittedDocument(models.Model):
     description = models.TextField()
     document = models.FileField(upload_to='student_documents/')
     submitted_at = models.DateTimeField(auto_now_add=True)
-    from_date = models.DateTimeField(auto_now=True)
-    to_date = models.DateTimeField(auto_now=True)
-    specific_course_id = models.IntegerField(blank=False,default=0)
+    from_date = models.DateTimeField(blank=False)
+    to_date = models.DateTimeField(blank=False)
     accepted = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.student.id} -  {self.document.name}"

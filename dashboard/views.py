@@ -185,7 +185,6 @@ def student_document_submission(request):
             new_document.student = request.user 
             new_document.description = form.cleaned_data['description'] 
             new_document.document = form.cleaned_data['document'] 
-            new_document.specific_course_id = request.POST.get('course')
             new_document.from_date = request.POST.get('from_date')
             new_document.to_date = request.POST.get('to_date')
             new_document.save()            

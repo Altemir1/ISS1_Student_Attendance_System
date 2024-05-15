@@ -11,12 +11,6 @@
             <h2>Submit Documents</h2>
             {% csrf_token %}
             
-            <label for="course">Subject:</label>
-            <select name="course" id="course">
-                {% for course in student_courses %}
-                    <option value="{{ course.specific_course_id }}">{{ course.course_code }}.{{ course.group }}-{{ course.course_name }}</option>
-                {% endfor %}
-            </select>
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
@@ -37,7 +31,6 @@
 
             <button type="submit" class="submit_document_button">Submit</button>
 
-            
 
             {% if error %}
                 <div id="error-messages" class="error-messages">
