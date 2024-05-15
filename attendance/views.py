@@ -72,7 +72,6 @@ def card_reader(request):
             rounded_date = current_date_time.replace(minute=15, second=0, microsecond=0)
                 
         rounded_time = rounded_date.strftime('%H:%M')
-        
         uid=uid[0:len(uid)-1]
         id_of_a_student = card_of_student.objects.filter(uid=uid).first()
         
@@ -83,7 +82,6 @@ def card_reader(request):
                 attendance_that_will_change=attendance.objects.filter(specific_course_id=crs.specific_course_id, student_id=id_of_a_student.student_id, date=current_date).first()
                 
                 if attendance_that_will_change is not None:
-                    print("SHIT HERE WE GO AGAIN")
                     attendance_that_will_change.status=1
                     attendance_that_will_change.save()
 

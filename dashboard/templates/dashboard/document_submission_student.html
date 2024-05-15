@@ -10,12 +10,26 @@
         <form class="file_submission_form" method="post" enctype="multipart/form-data">
             <h2>Submit Documents</h2>
             {% csrf_token %}
-
+            
+            <label for="course">Subject:</label>
+            <select name="course" id="course">
+                {% for course in student_courses %}
+                    <option value="{{ course.specific_course_id }}">{{ course.course_code }}.{{ course.group }}-{{ course.course_name }}</option>
+                {% endfor %}
+            </select>
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
             </div>
 
+            <label for="from_date" style="display: inline-block; margin-right: 10px;">From Date:</label>
+             <input type="date" name="from_date" id="from_date" style="display: inline-block;">
+
+
+            <label for="to_date" style="display: inline-block; margin-right: 10px;">To Date:</label>
+            <input type="date" name="to_date" id="to_date"  style="display: inline-block;">
+            
+            
             <div class="form-group">
                 <label for="document">Upload :</label>
                 <input type="file" name="document" id="document" class="form-control-file" required>
@@ -23,19 +37,7 @@
 
             <button type="submit" class="submit_document_button">Submit</button>
 
-            {% if documents %} 
-            <h2>Your Submissions:</h2> 
-                <ul> 
-                    {% for doc in documents %} 
-                    <li> 
-                        <a href="{% url 'dashboard:download_document' doc.id %}"> 
-                            {{ doc.document.name|cut:"student_documents/" }} 
-                        </a> - Uploaded on: {{ doc.submitted_at }} 
-                        <a href="{% url 'dashboard:remove_document' doc.id %}">Remove</a> 
-                    </li> 
-                    {% endfor %} 
-                </ul> 
-            {% endif %}
+            
 
             {% if error %}
                 <div id="error-messages" class="error-messages">
@@ -43,7 +45,7 @@
                 </div>
             {% elif success %}
                 <div id="error-messages" class="error-messages">
-                    <p style="color: white;text-align: center; font-size: 2.2vh; ">{{ success }}</p>
+                    <p style="color: blue;text-align: center; font-size: 2.2vh; ">{{ success }}</p>
                 </div>
             {% endif %}
         </form>

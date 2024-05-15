@@ -152,8 +152,32 @@ def student_courses_specific_one(request,  course_code=None):
 
 @login_required 
 def student_document_submission(request): 
-    documents = SubmittedDocument.objects.filter(student=request.user) 
-    context = {'status1':"",'status2':"",'status3':"active",'documents': documents} 
+    student_courses = []
+    specific_course_ids_of_a_student = students_courses.objects.filter(student_id=request.user.student.id).values_list('specific_course_id', flat=True)
+    unique = []
+    for id_specific_course in specific_course_ids_of_a_student: 
+        course_of_student = specific_course.objects.filter(specific_course_id=id_specific_course).first()
+        cours = course.objects.get(course_code=course_of_student.course_code)
+        group = str(course_of_student.group)
+        if course_of_student.is_lecture:
+            group += 'N'
+        else:
+            group += 'P'
+        student_course = {
+                'specific_course_id': course_of_student.specific_course_id,
+                'course_code': cours.course_code,
+                'course_name': cours.course_name,
+                'group': group,
+                
+            }
+            # Adding the dictionary to the list
+        repr = str(cours.course_code) + str(cours.course_name) + group 
+        if repr not in unique:
+            student_courses.append(student_course)
+            unique.append(repr)
+    
+    context = {'status1':"",'status2':"",'status3':"active",'student_courses': student_courses}
+    
     if request.method == 'POST': 
         form = DocumentSubmissionForm(request.POST, request.FILES) 
         if form.is_valid():    
@@ -161,8 +185,12 @@ def student_document_submission(request):
             new_document.student = request.user 
             new_document.description = form.cleaned_data['description'] 
             new_document.document = form.cleaned_data['document'] 
+            new_document.specific_course_id = request.POST.get('course')
+            new_document.from_date = request.POST.get('from_date')
+            new_document.to_date = request.POST.get('to_date')
             new_document.save()            
             context['success']= 'Your document has been received!' 
+            print('received')
             context['form']=form 
             return render(request, 'dashboard/document_submission_student.html',context)  # Redirect to success page after handling 
         else: 
@@ -171,6 +199,11 @@ def student_document_submission(request):
     else: 
         context['form'] = DocumentSubmissionForm() 
     return render(request, 'dashboard/document_submission_student.html', context) 
+
+@login_required
+def student_document_history(request):
+    documents = SubmittedDocument.objects.filter(student=request.user) 
+    
 
 @login_required 
 def remove_document(request, doc_id): 
