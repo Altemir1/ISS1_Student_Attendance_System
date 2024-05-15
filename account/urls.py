@@ -6,5 +6,6 @@ from django.conf import settings
 app_name = 'account'
 urlpatterns = [
     path('login/', views.user_login, name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),   
+    path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
+    path('adminka/',views.admin_login, name='adminka')
 ]

@@ -71,7 +71,7 @@ body {
     cursor: pointer;
     font-family: gilroy-600;
 }
-.role.active, .role:hover {
+.role.active, .role:hover, .line{
     color: #F6A667;
     text-decoration: underline;
 }

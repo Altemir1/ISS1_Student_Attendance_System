@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Student, Teacher, CustomUser
+from .models import Student, Teacher, CustomUser, Admin
 from .forms import TeacherCreationForm, StudentCreationForm
 # Register your models here.
 
@@ -53,7 +53,25 @@ class CustomUserTeacher(UserAdmin):
     search_fields = ('id', 'first_name', 'last_name', 'email')
     ordering = ('id',)
 
+class CustomUserAdmin(UserAdmin):
+    list_display = ('id', 'first_name', 'last_name', 'email')
+    list_filter = ()
+    fieldsets = (
+        (None, {'fields': ('id', 'email')}),
+        ('Personal Info', {'fields': ('first_name', 'last_name')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('id', 'email', 'password1', 'password2'),
+        }),
+    )
+    search_fields = ('id', 'first_name', 'last_name', 'email')
+    ordering = ('id',)
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Teacher, CustomUserTeacher)
 admin.site.register(Student, CustomUserStudent)
+admin.site.register(Admin, CustomUserAdmin)
+

@@ -26,3 +26,21 @@ class CustomUserBackend(ModelBackend):
             return user
 
         return None
+    
+    def authenticate_admin(self, request, id=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        
+        try:
+            user = UserModel.objects.get(admin__id=id)
+        except UserModel.DoesNotExist:
+            return None
+        
+        # Here we assume 'is_admin' is an attribute to check if the user is an admin
+        if not user.is_admin:
+            return None
+        
+        if check_password(password, user.password):
+            print(f"Admin authenticated: {user}")
+            return user
+        
+        return None
