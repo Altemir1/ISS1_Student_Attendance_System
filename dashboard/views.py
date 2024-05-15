@@ -1,4 +1,4 @@
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from attendance.models import course, attendance, specific_course, teachers_courses, students_courses
@@ -7,7 +7,7 @@ from account.models import Teacher, Student
 from .forms import DocumentSubmissionForm
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
-
+from django.contrib import messages
 import math
 
 #STUDENT
@@ -202,8 +202,18 @@ def student_document_submission(request):
 
 @login_required
 def student_document_history(request):
-    documents = SubmittedDocument.objects.filter(student=request.user) 
-    
+    if request.method == 'POST':
+        if 'delete_id' in request.POST:  # Check if there's a delete action
+            document_id = request.POST.get('delete_id')
+            document = SubmittedDocument.objects.filter(id=document_id, student=request.user).first()
+            if document:
+                document.delete()
+                return redirect('student_document_history')  # Redirect after delete
+            else:
+                return HttpResponseNotAllowed("You cannot delete this document.")
+
+    documents = SubmittedDocument.objects.filter(student=request.user).order_by('-submitted_at')
+    return render(request, 'dashboard/student_history.html', {'documents': documents})
 
 @login_required 
 def remove_document(request, doc_id): 
@@ -319,3 +329,22 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
         
 
     return render(request,'dashboard/course_specific_teacher_attendance.html',{'course_code':course_code,'group':group, 'course_name':course_name, 'course_type':course_type, 'students':students, 'weeks':hours,'status1':"",'status2':"active"})
+
+
+@login_required
+def admin_page(request):
+    if request.method == 'POST':
+        document_id = request.POST.get('document_id')
+        if document_id:
+            new_status = request.POST.get(f'accepted_{document_id}')
+            try:
+                document = SubmittedDocument.objects.get(id=document_id)
+                document.accepted = new_status
+                document.save()
+                messages.success(request, "Document status updated successfully.")
+            except SubmittedDocument.DoesNotExist:
+                messages.error(request, "Document not found.")
+            return redirect('dashboard:admin_page')  
+
+    documents = SubmittedDocument.objects.all()
+    return render(request, 'dashboard/admin_page.html', {'documents': documents})

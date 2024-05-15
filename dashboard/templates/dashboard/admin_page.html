@@ -1,0 +1,104 @@
+
+<style>
+    body {
+        font-family: Arial, sans-serif; /* Sets the font for the page */
+    }
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    table {
+        width: 100%; /* Makes the table use all available width */
+        border-collapse: collapse; /* Removes space between borders */
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ccc; /* Adds a light grey border around table cells */
+        padding: 8px; /* Adds space around text in each cell */
+        text-align: left; /* Aligns text to the left */
+    }
+    th {
+        background-color: #f4f4f4; /* Light grey background for headers */
+        text-align: center; /* Center-aligns header text */
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9; /* Zebra stripes for the table */
+    }
+    a {
+        color: #06c; /* Sets the color of links */
+        text-decoration: none; /* Removes underline from links */
+    }
+    a:hover {
+        text-decoration: underline; /* Adds underline on hover for links */
+    }
+    .alert {
+    padding: 10px;
+    background-color: #f4f4f4;
+    color: black;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.alert.error { background-color: #f2dede; color: darkred; }
+.alert.success { background-color: #dff0d8; color: darkgreen; }
+</style>
+<h2>Submitted Documents</h2>
+<form method="post">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Description</th>
+                <th>Document</th>
+                <th>Submitted At</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Accepted</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in documents %}
+            <tr>
+                <td>{{ document.student.id }}</td>
+                <td>{{ document.description }}</td>
+                <td><a href="{{ document.document.url }}" target="_blank">View Document</a></td>
+                <td>{{ document.submitted_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ document.from_date|date:"Y-m-d " }}</td>
+                <td>{{ document.to_date|date:"Y-m-d " }}</td>
+                <td>
+                    <select name="accepted_{{ document.id }}">
+                        {% for value, name in document.ACCEPTED_CHOICES %}
+                            <option value="{{ value }}" {% if document.accepted == value %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><button type="submit" name="document_id" value="{{ document.id }}">Update</button></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No documents submitted.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</form>
+{% if messages %}
+    <div id="message-container">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            const messageContainer = document.getElementById('message-container');
+            if (messageContainer) {
+                messageContainer.style.display = 'none';
+            }
+        }, 5000); // Adjust time as needed, 5000 milliseconds = 5 seconds
+    };
+</script>

@@ -9,6 +9,11 @@ class SubmittedDocument(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)
     from_date = models.DateTimeField(blank=False)
     to_date = models.DateTimeField(blank=False)
-    accepted = models.BooleanField(default=False)
+    ACCEPTED_CHOICES = [
+        (0, 'Not Checked'),
+        (1, 'Accepted'),
+        (2, 'Rejected')
+    ]
+    accepted = models.IntegerField(default=0, choices=ACCEPTED_CHOICES)
     def __str__(self):
         return f"{self.student.id} -  {self.document.name}"

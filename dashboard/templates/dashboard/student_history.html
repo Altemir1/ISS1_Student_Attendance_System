@@ -1,0 +1,81 @@
+{% extends "dashboard/student_base.html" %}
+{% block content %}
+
+<div class="hirarchi">
+    <h3 onclick="window.location.href='{% url 'dashboard:student_document_submission'%}'" >&nbsp;SERVICES</h3>
+    <h3 onclick="window.location.href='{% url 'dashboard:student_document_history' %}'" >&nbsp;,HISTORY</h3>
+</div>
+<br>
+<div class="document-section">
+    <style>
+        .document-section table {
+            width: 100%;
+            border-collapse: collapse;
+            color: rgb(0, 0, 0); /* Ensure text color is set explicitly if needed */
+        }
+        .document-section th, .document-section td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            background-color: white; /* Ensure background color is set explicitly */
+        }
+        .document-section th {
+            background-color: #f4f4f4;
+        }
+        .document-section tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .document-section .btn-remove {
+            color: red;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+<h2>Your Submitted Documents</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Document</th>
+            <th>Submitted At</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in documents %}
+        <tr>
+            <td>{{ document.description }}</td>
+            <td><a href="{{ document.document.url }}" target="_blank">{{ document.document.name|cut:"student_documents/" }}</a></td>
+            <td>{{ document.submitted_at|date:"Y-m-d H:i" }}</td>
+            <td>{{ document.from_date|date:"Y-m-d " }}</td>
+            <td>{{ document.to_date|date:"Y-m-d " }}</td>
+            <td>
+                {% if document.accepted == 0 %}
+                    Not Checked
+                {% elif document.accepted == 1 %}
+                    Accepted
+                {% else %}
+                    Rejected
+                {% endif %}
+            </td>
+            <td>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete_id" value="{{ document.id }}">
+                    <button type="submit" class="btn-remove" onclick="return confirm('Are you sure you want to remove this document?');">Remove</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No documents submitted.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock content %}
