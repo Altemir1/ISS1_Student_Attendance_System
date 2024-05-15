@@ -25,5 +25,5 @@ urlpatterns = [
     path('teacher_courses_specific_one_attendance/<str:course_code>/<str:group>/<str:course_type>/', views.teacher_courses_specific_one_attendance, name='teacher_courses_specific_one_attendance'),
     
     #ADMIN
-    path('admin_page/', views.admin_page, name='admin_page'),
+    path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]

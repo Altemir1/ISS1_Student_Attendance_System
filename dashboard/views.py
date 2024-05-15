@@ -335,7 +335,7 @@ def teacher_courses_specific_one_attendance(request, course_code, group, course_
 
 
 @login_required
-def admin_page(request):
+def admin_dashboard(request):
     if request.method == 'POST':
         document_id = request.POST.get('document_id')
         if document_id:
@@ -350,4 +350,4 @@ def admin_page(request):
             return redirect('dashboard:admin_page')  
 
     documents = SubmittedDocument.objects.all()
-    return render(request, 'dashboard/admin_page.html', {'documents': documents})
+    return render(request, 'dashboard/admin_dashboard.html', {'documents': documents})
