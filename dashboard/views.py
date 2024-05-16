@@ -326,14 +326,18 @@ def admin_dashboard(request):
     if request.method == 'POST':
         document_id = request.POST.get('document_id')
         if document_id:
-            new_status = request.POST.get(f'accepted_{document_id}')
             try:
                 document = SubmittedDocument.objects.get(id=document_id)
+                new_status = int(request.POST.get(f'accepted_{document_id}'))
                 document.accepted = new_status
                 document.save()
+                if new_status == 1:
+                    document.update_attendance()
                 messages.success(request, "Document status updated successfully.")
             except SubmittedDocument.DoesNotExist:
-                messages.error(request, "Document not found.")
+                messages.error(request, "Document not found.")  
+            except ValueError:
+                messages.error(request, "Invalid status value.")
             return redirect('dashboard:admin_dashboard')  
 
     documents = SubmittedDocument.objects.all()
