@@ -334,7 +334,7 @@ def admin_dashboard(request):
                 messages.success(request, "Document status updated successfully.")
             except SubmittedDocument.DoesNotExist:
                 messages.error(request, "Document not found.")
-            return redirect('dashboard:admin_page')  
+            return redirect('dashboard:admin_dashboard')  
 
     documents = SubmittedDocument.objects.all()
     return render(request, 'dashboard/admin_dashboard.html', {'documents': documents})
