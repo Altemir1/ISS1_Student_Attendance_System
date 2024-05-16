@@ -68,13 +68,17 @@
                 <td>{{ document.from_date|date:"Y-m-d " }}</td>
                 <td>{{ document.to_date|date:"Y-m-d " }}</td>
                 <td>
-                    <select name="accepted_{{ document.id }}">
+                    <select name="accepted_{{ document.id }}" {% if document.accepted != 0 %}disabled{% endif %}>
                         {% for value, name in document.ACCEPTED_CHOICES %}
                             <option value="{{ value }}" {% if document.accepted == value %}selected{% endif %}>{{ name }}</option>
                         {% endfor %}
                     </select>
                 </td>
-                <td><button type="submit" name="document_id" value="{{ document.id }}">Update</button></td>
+                <td>
+                    <button type="submit" name="document_id" value="{{ document.id }}" {% if document.accepted != 0 %}disabled{% endif %}>
+                        Update
+                    </button>
+                </td>
             </tr>
             {% empty %}
             <tr>
